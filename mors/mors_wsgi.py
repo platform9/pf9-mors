@@ -124,6 +124,46 @@ def add_update_vm_lease(tenant_id, instance_id):
     return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
 
 
+# --- Webhooks related ---
+@enforce(required=['_member_'])
+@app.route("/v1/webhooks", methods=['PUT', 'POST'])
+@error_handler
+def add_webhook():
+    webhook_obj = request.get_json()
+    tenant_id = webhook_obj.get('tenant_id')
+    instance_id = webhook_obj.get('instance_id')
+    if request.method == "POST":
+        lease_manager.add_webhook(
+            get_context(), webhook_obj['url'],
+            webhook_obj['method'], webhook_obj['retry_attempts'],
+            webhook_obj['body'], webhook_obj['content_type'],
+            tenant_id, instance_id)
+    else:
+        lease_manager.update_instance_webhook(
+            get_context(), tenant_id, webhook_obj)
+    return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@enforce(required=['_member_'])
+@app.route("/v1/webhooks/<res_type>/<res_id>", methods=['GET'])
+@error_handler
+def get_webhook(res_type='all', res_id='all'):
+    webhooks_info = lease_manager.get_webhook(get_context(), res_type, res_id)
+    if webhooks_info:
+        return jsonify({"webhooks": webhooks_info})
+    else:
+        return jsonify({}), 200, {'ContentType': 'application/json'}
+
+
+@enforce(required=['_member_'])
+@app.route("/v1/webhooks/delete", methods=['POST'])
+@error_handler
+def delete_webhook():
+    webhook_obj = request.get_json()
+    lease_manager.delete_webhook(get_context(), webhook_obj['url'])
+    return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
+
+
 def start_server(conf):
     global lease_manager
     lease_manager = LeaseManager(conf)

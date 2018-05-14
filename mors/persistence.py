@@ -66,6 +66,7 @@ class DbPersistence:
         self.metadata = MetaData(bind=self.engine)
         self.tenant_lease = Table('tenant_lease', self.metadata, autoload=True)
         self.instance_lease = Table('instance_lease', self.metadata, autoload=True)
+        self.webhooks = Table('webhooks', self.metadata, autoload=True)
 
     @db_connect(transaction=False)
     def get_all_tenant_leases(self, conn):
@@ -119,10 +120,49 @@ class DbPersistence:
         conn.execute(self.instance_lease.update().where(
             self.instance_lease.c.instance_uuid == instance_uuid).values
                      (tenant_uuid=tenant_uuid, expiry=expiry,
-                      updated_at=updated_at, updated_by=updated_by))
+                      updated_at=updated_at, updated_by=updated_by, notified=False))
 
     @db_connect(transaction=True)
     def delete_instance_leases(self, conn, instance_uuids):
         # Delete 10 at a time, should we soft delete
         logger.debug("Deleting instance leases %s", str(instance_uuids))
         conn.execute(self.instance_lease.delete().where(self.instance_lease.c.instance_uuid.in_(instance_uuids)))
+
+    @db_connect(transaction=True)
+    def stop_notifications(self, conn, instance_uuid):
+        logger.debug("Stopping notifications for %s", str(instance_uuid))
+        conn.execute(self.instance_lease.update().where(
+            self.instance_lease.c.instance_uuid.in_(instance_uuid)).values(notified=True))
+
+    @db_connect(transaction=True)
+    def add_webhook(self, conn, url, method, retry_attempts, body, content_type, res_id, res_type="tenant"):
+        logger.debug("Adding webhook %s", url)
+        conn.execute(self.webhooks.insert(), url=url, method=method,
+                     retry_attempts=retry_attempts, body=body,
+                     content_type=content_type)
+        if res_type == "tenant":
+            conn.execute(self.tenant_lease.update().where(
+                self.tenant_lease.c.tenant_uuid == res_id).
+                         values(webhook=url))
+        elif res_type == "instance":
+            conn.execute(self.instance_lease.update().where(
+                self.instance_lease.c.instance_uuid == res_id).
+                         values(webhook=url))
+
+    @db_connect(transaction=False)
+    def get_webhook(self, conn):
+            return conn.execute(self.webhooks.select()).fetchall()
+
+    @db_connect(transaction=True)
+    def delete_webhook(self, conn, url):
+        logger.debug("Deleting webhook %s", url)
+        # add logic to delete from instance and tenant table
+        # conn.execute(self.webhooks.delete().where(self.webhooks.c.url == url))
+
+    @db_connect(transaction=False)
+    def get_webhook_for_resource(self, conn, res_id, res_type='tenant'):
+        if res_type == "instance":
+            return conn.execute(self.webhooks.select(self.instance_lease.c.instance_uuid == res_id and
+                                                     self.webhooks.c.webhook == self.instance_lease.c.webhook)).first()
+        return conn.execute(self.webhooks.select(self.tenant_lease.c.tenant_uuid == res_id
+                                                 and self.webhooks.c.webhook == self.tenant_lease.c.webhook)).first()

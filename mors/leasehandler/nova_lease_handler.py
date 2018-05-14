@@ -61,7 +61,7 @@ class NovaLeaseHandler:
     def _delete_vm(self, nova, vm_uuid):
         try:
             logger.info("Deleting VM %s", vm_uuid)
-            nova.servers.delete(vm_uuid)
+            nova.servers.stop(vm_uuid)
             return SUCCESS_OK
         except novaclient.exceptions.NotFound:
             return ERR_NOT_FOUND
