@@ -1,5 +1,5 @@
 from webhooks_handler import WebHooksHandler
-from slack_webhooks_handler import SlackWebHooksHandler
+# from slack_webhooks_handler import SlackWebHooksHandler
 
 
 def get_webhooks_handler(conf, webhook_type=None):
