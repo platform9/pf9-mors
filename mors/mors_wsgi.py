@@ -132,6 +132,8 @@ def add_webhook():
     webhook_obj = request.get_json()
     tenant_id = webhook_obj.get('tenant_id')
     instance_id = webhook_obj.get('instance_id')
+    if not tenant_id and not instance_id:
+        return jsonify({'error': 'Specify tenant_id or instance_id'}), 400, {'ContentType': 'application/json'}
     if request.method == "POST":
         lease_manager.add_webhook(
             get_context(), webhook_obj['url'],
@@ -160,7 +162,7 @@ def get_webhook(res_type='all', res_id='all'):
 @error_handler
 def delete_webhook():
     webhook_obj = request.get_json()
-    lease_manager.delete_webhook(get_context(), webhook_obj['url'])
+    lease_manager.delete_instance_webhook(get_context(), webhook_obj['url'])
     return jsonify({'success': True}), 200, {'ContentType': 'application/json'}
 
 

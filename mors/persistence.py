@@ -136,10 +136,14 @@ class DbPersistence:
 
     @db_connect(transaction=True)
     def add_webhook(self, conn, url, method, retry_attempts, body, content_type, res_id, res_type="tenant"):
+        import pdb;pdb.set_trace()
         logger.debug("Adding webhook %s", url)
+        # if not res_type:
         conn.execute(self.webhooks.insert(), url=url, method=method,
                      retry_attempts=retry_attempts, body=body,
                      content_type=content_type)
+        # else:
+        import pdb;pdb.set_trace()
         if res_type == "tenant":
             conn.execute(self.tenant_lease.update().where(
                 self.tenant_lease.c.tenant_uuid == res_id).
@@ -157,7 +161,7 @@ class DbPersistence:
     def delete_webhook(self, conn, url):
         logger.debug("Deleting webhook %s", url)
         # add logic to delete from instance and tenant table
-        # conn.execute(self.webhooks.delete().where(self.webhooks.c.url == url))
+        conn.execute(self.webhooks.delete().where(self.webhooks.c.url == url))
 
     @db_connect(transaction=False)
     def get_webhook_for_resource(self, conn, res_id, res_type='tenant'):

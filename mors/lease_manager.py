@@ -172,7 +172,6 @@ class LeaseManager:
         logger.info("Delete instance lease %s", instance_uuid)
         self.domain_mgr.delete_instance_leases([instance_uuid])
 
-
     def add_webhook(self, context, url, method,
                     retry_attempts, body, content_type,
                     tenant_id=None, instance_id=None):
@@ -184,7 +183,6 @@ class LeaseManager:
             self.domain_mgr.add_webhook(url, method, retry_attempts, body,
                                         content_type, res_id=tenant_id, res_type="tenant")
 
-
     def get_webhook(self, context, instance_uuid=None, tenant_uuid=None):
         if not instance_uuid and not tenant_uuid:
             return self.domain_mgr.get_webhook()
@@ -193,7 +191,6 @@ class LeaseManager:
                 instance_uuid, res_type="instance")
         return self.domain_mgr.get_webhook_for_resource(
             tenant_uuid, res_type="tenant")
-
 
     # def update_webhooks(self, context, tenant_uuid, instance_lease_obj):
     #     logger.info("Update instance lease %s", instance_lease_obj)
@@ -244,13 +241,13 @@ class LeaseManager:
                             vm['created_at'])
                 vms_to_delete.append(vm)
             else:
-                if now > warning_date and vm['instance_uuid'] not in vm_ids_to_delete \
-                        and vm['instance_uuid'] not in do_not_delete:
+                if now > warning_date and vm['instance_uuid'] not in vm_ids_to_delete:
+                        # and vm['instance_uuid'] not in do_not_delete:
                     vm['expiry'] = expiry_date
                     warning_vms.append(vm)
                 logger.debug("Ignoring vm, vm not expired yet or already deleted %s, %s", vm['instance_uuid'],
                              vm['created_at'])
-
+        import pdb;pdb.set_trace()
         return vms_to_delete, warning_vms
 
     def _delete_vms_for_tenant(self, t_lease):
@@ -272,6 +269,7 @@ class LeaseManager:
             warn_vm.update({k: v for k, v in data.iteritems() if v})
         warning_result = self.webhooks_handler.post(warning_vms)
         # Update db for for successful warnings
+        import pdb;pdb.set_trace()
         for warning in warning_result:
             if warning.ok:
                 vm_info = [vm for vm in warning_vms if vm['instance_uuid'] == warning.instance]
