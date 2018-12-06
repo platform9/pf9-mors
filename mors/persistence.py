@@ -166,7 +166,10 @@ class DbPersistence:
     @db_connect(transaction=False)
     def get_webhook_for_resource(self, conn, res_id, res_type='tenant'):
         if res_type == "instance":
-            return conn.execute(self.webhooks.select(self.instance_lease.c.instance_uuid == res_id and
+            return_data = conn.execute(self.webhooks.select(self.instance_lease.c.instance_uuid == res_id and
                                                      self.webhooks.c.webhook == self.instance_lease.c.webhook)).first()
+            if not return_data:
+                return conn.execute(self.webhooks.select(self.tenant_lease.c.tenant_uuid == self.instance_lease.c.instance_uuid
+                                                         and self.webhooks.c.webhook == self.instance_lease.c.webhook)).first()
         return conn.execute(self.webhooks.select(self.tenant_lease.c.tenant_uuid == res_id
                                                  and self.webhooks.c.webhook == self.tenant_lease.c.webhook)).first()
