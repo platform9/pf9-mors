@@ -38,14 +38,15 @@ setup(name='mors',
           'PasteDeploy==1.5.2',
           'pip==1.5.2',
           'python-novaclient==3.2.0',
-          'flask==0.10.0',
+          'flask==0.12.3',
           'SQLAlchemy==0.9.8',
           'sqlalchemy-migrate==0.9.5',
           'PyMySQL==0.8.1',
           'eventlet==0.18.4',
-          'requests==2.13',
+          'requests==2.20.0',
           'nose',
-          'proboscis'
+          'proboscis',
+          'apprise==0.5.2'
       ],
       scripts=['mors/pf9_mors.py', 'mors/mors_manage.py']
       )

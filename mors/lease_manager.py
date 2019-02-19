@@ -18,6 +18,7 @@ from datetime import datetime, timedelta
 
 from leasehandler import get_lease_handler
 from webhooks_handler import get_webhooks_handler
+from notificationshandler import get_notifications_handler
 
 from persistence import DbPersistence
 from eventlet.greenthread import spawn_after
@@ -87,6 +88,7 @@ class LeaseManager:
         self.lease_handler = get_lease_handler(conf)
         self.sleep_seconds = conf.getint("DEFAULT", "sleep_seconds")
         self.webhooks_handler = get_webhooks_handler(conf, 'slack')
+        self.notications_handler = get_notifications_handler(conf, 'email')
 
     def add_tenant_lease(self, context, tenant_obj):
         logger.info("Adding tenant lease %s", tenant_obj)
@@ -220,6 +222,7 @@ class LeaseManager:
         add_seconds = timedelta(seconds=expiry_mins*60)
         warning_duration = timedelta(seconds=3600)
         instance_leases = self.get_tenant_and_associated_instance_leases(None, tenant_uuid)['all_vms']
+        import pdb;pdb.set_trace()
         for i_lease in instance_leases:
             if now > i_lease['expiry']:
                 logger.info("Explicit lease for %s queueing for deletion", i_lease['instance_uuid'])
@@ -267,8 +270,12 @@ class LeaseManager:
                 get_webhook_for_resource(res_id=warn_vm['instance_uuid'], res_type="instance")
             data = get_vm_webhook_data(vm_notification_preferences)
             warn_vm.update({k: v for k, v in data.iteritems() if v})
-        warning_result = self.webhooks_handler.post(warning_vms)
+        # SEND HERE to NOTIFICATION SERVICE
+        self.notications_handler.notify(warning_vms)
+        import pdb;pdb.set_trace()
+        # warning_result = self.webhooks_handler.post(warning_vms)
         # Update db for for successful warnings
+        warning_result = list()
         import pdb;pdb.set_trace()
         for warning in warning_result:
             if warning.ok:

@@ -49,6 +49,7 @@ class NovaLeaseHandler:
         :param tenant_uuid:
         :return: an iteratble that returns a set of vms (each vm has a UUID and a created_at field)
         """
+        import pdb;pdb.set_trace()
         try:
             with self._get_nova_client() as nova:
                 vms = nova.servers.list(search_opts={'all_tenants':1, 'tenant_id':tenant_uuid})
