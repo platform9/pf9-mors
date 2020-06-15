@@ -21,8 +21,11 @@ from eventlet import wsgi
 from paste.deploy import loadapp
 import argparse, logging
 import logging.handlers
-import ConfigParser, os
+import os
 from mors import mors_wsgi
+
+from six.moves.configparser import ConfigParser
+
 
 def _get_arg_parser():
     parser = argparse.ArgumentParser(description="Lease Manager for VirtualMachines")
@@ -56,6 +59,6 @@ def start_server(conf, paste_ini):
 
 if __name__ == '__main__':
     parser = _get_arg_parser()
-    conf = ConfigParser.ConfigParser()
+    conf = ConfigParser()
     conf.readfp(open(parser.config_file))
     start_server(conf, parser.paste_file)

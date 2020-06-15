@@ -3,7 +3,7 @@
 output_dir=./build
 log_filter=-paramiko.transport
 setup_venv() {
-    virtualenv ${output_dir}/venv
+    virtualenv -p python3 ${output_dir}/venv
     source ${output_dir}/venv/bin/activate
     pip install -e .
 }

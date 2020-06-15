@@ -18,7 +18,7 @@ from novaclient import client
 import logging
 import novaclient
 from datetime import datetime
-from constants import SUCCESS_OK, ERR_NOT_FOUND, ERR_UNKNOWN
+from .constants import SUCCESS_OK, ERR_NOT_FOUND, ERR_UNKNOWN
 logger = logging.getLogger(__name__)
 
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
@@ -52,7 +52,7 @@ class NovaLeaseHandler:
         try:
             with self._get_nova_client() as nova:
                 vms = nova.servers.list(search_opts={'all_tenants':1, 'tenant_id':tenant_uuid})
-                return map(lambda x: get_vm_data(x), vms)
+                return [get_vm_data(x) for x in vms]
         except Exception as e:
             logger.exception("Error getting list of vms for tenant %s", tenant_uuid)
 

@@ -22,5 +22,5 @@ def run_tests():
     TestProgram().run_and_exit()
 
 if __name__ == '__main__':
-    print "Run tests"
+    print("Run tests")
     run_tests()

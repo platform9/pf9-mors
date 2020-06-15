@@ -16,11 +16,11 @@ limitations under the License.
 
 from datetime import datetime, timedelta
 
-from leasehandler import get_lease_handler
-from persistence import DbPersistence
+from .leasehandler import get_lease_handler
+from .persistence import DbPersistence
 from eventlet.greenthread import spawn_after
 import logging
-from leasehandler.constants import SUCCESS_OK, ERR_UNKNOWN, ERR_NOT_FOUND
+from .leasehandler.constants import SUCCESS_OK, ERR_UNKNOWN, ERR_NOT_FOUND
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +88,7 @@ class LeaseManager:
     def get_tenant_leases(self, context):
         logger.debug("Getting all tenant lease")
         all_tenants = self.domain_mgr.get_all_tenant_leases()
-        all_tenants = map(lambda x: get_tenant_lease_data(x), all_tenants)
+        all_tenants = [get_tenant_lease_data(x) for x in all_tenants]
         logger.debug("Getting all tenant lease %s", all_tenants)
         return all_tenants
 
@@ -104,7 +104,7 @@ class LeaseManager:
         return {
             'tenant_lease': self.get_tenant_lease(context, tenant_uuid),
             'all_vms':
-                map(lambda x: get_vm_lease_data(x), self.domain_mgr.get_instance_leases_by_tenant(tenant_uuid))
+                [get_vm_lease_data(x) for x in self.domain_mgr.get_instance_leases_by_tenant(tenant_uuid)]
         }
 
     def check_instance_lease_violation(self, instance_lease, tenant_lease):
@@ -157,7 +157,7 @@ class LeaseManager:
     def _get_vms_to_delete_for_tenant(self, tenant_uuid, expiry_mins):
         vms_to_delete = []
         vm_ids_to_delete = set()
-        do_not_delete = set() 
+        do_not_delete = set()
         now = datetime.utcnow()
         add_seconds = timedelta(seconds=expiry_mins*60)
         instance_leases = self.get_tenant_and_associated_instance_leases(None, tenant_uuid)['all_vms']

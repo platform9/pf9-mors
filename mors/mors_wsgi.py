@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from flask import Flask, request, jsonify
-from lease_manager import LeaseManager
-from context_util import enforce, get_context, error_handler
+from .lease_manager import LeaseManager
+from .context_util import enforce, get_context, error_handler
 from flask.json import JSONEncoder
 from datetime import datetime
 

@@ -107,7 +107,6 @@ def test_apis():
                                 "expiry": now + timedelta(seconds=60),
                                 "created_at": now + timedelta(seconds=60),
                                 "created_by": "e@xyz.com"}}
-    tenant_id = tenants.keys()[0]
     now = datetime.utcnow()
     for instance_uuid in instances:
         instance = instances[instance_uuid]

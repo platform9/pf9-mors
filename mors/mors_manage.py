@@ -16,9 +16,10 @@ limitations under the License.
 """
 
 import argparse, logging
-import ConfigParser
 from migrate.versioning.api import upgrade, create, version_control
 from migrate.exceptions import DatabaseAlreadyControlledError
+
+from six.moves.configparser import ConfigParser
 
 def _get_arg_parser():
     parser = argparse.ArgumentParser(description="Lease Manager for VirtualMachines")
@@ -30,19 +31,19 @@ def _version_control(conf):
     try:
         version_control(conf.get("DEFAULT", "db_conn"), conf.get("DEFAULT", "repo"))
     except DatabaseAlreadyControlledError as e:
-        print e
+        print(e)
         # Ignore the already controlled error
 
 if __name__ == '__main__':
     parser = _get_arg_parser()
-    conf = ConfigParser.ConfigParser()
+    conf = ConfigParser()
     conf.readfp(open(parser.config_file))
     if 'db_sync' == parser.command:
         _version_control(conf)
         upgrade(conf.get("DEFAULT", "db_conn"), conf.get("DEFAULT", "repo"))
         exit(0)
     else:
-        print 'Unknown command'
+        print('Unknown command')
         exit(1)
 
 

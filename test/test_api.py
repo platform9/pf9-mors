@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ConfigParser
 import os
 import sys;
 
@@ -21,7 +20,7 @@ import eventlet
 import requests
 from migrate.versioning.api import upgrade, version_control
 
-print sys.path
+print(sys.path)
 from mors.pf9_mors import start_server
 from mors.mors_wsgi import DATE_FORMAT
 import logging, sys
@@ -31,6 +30,7 @@ from proboscis import test
 import shutil
 from mors.leasehandler.fake_lease_handler import FakeLeaseHandler
 
+from six.moves.configparser import ConfigParser
 try:
     import http.client as http_client
 except ImportError:
@@ -91,7 +91,7 @@ def initialize():
         shutil.rmtree("./sqlite+pysqlite:")
     if os.path.exists("./test/test.db"):
         os.remove("./test/test.db")
-    conf = ConfigParser.ConfigParser()
+    conf = ConfigParser()
     conf.readfp(open("test/pf9-mors.ini"))
     #create(conf.get("DEFAULT", "db_conn"), "./mors_repo")
     version_control(conf.get("DEFAULT", "db_conn"), "./mors_repo")

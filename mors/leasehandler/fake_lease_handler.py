@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import constants
+from . import constants
 import logging
 from datetime import datetime
 
@@ -29,7 +29,7 @@ class FakeLeaseHandler:
 
     def add_tenant_data(self, tenant_id, instances):
         FakeLeaseHandler.tenants[tenant_id] = instances
-        print FakeLeaseHandler.tenants
+        print(FakeLeaseHandler.tenants)
 
     def get_tenant_data(self, tenant_id):
         return FakeLeaseHandler.tenants[tenant_id]
@@ -39,7 +39,7 @@ class FakeLeaseHandler:
 
     def delete_vm(self, tenant_uuid, vm_id):
         vms = FakeLeaseHandler.tenants[tenant_uuid]
-        new_vm_data = filter(lambda x: x['instance_uuid'] != vm_id, vms)
+        new_vm_data = [x for x in vms if x['instance_uuid'] != vm_id]
         FakeLeaseHandler.tenants[tenant_uuid] = new_vm_data
 
 
