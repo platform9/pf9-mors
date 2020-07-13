@@ -37,8 +37,9 @@ class NovaLeaseHandler:
                              tenant_id=self.conf.get("nova", "tenant_uuid"),
                              api_key=self.conf.get("nova", "password"),
                              auth_url=self.conf.get("nova", "auth_url"),
-                             insecure=True, # Insecure to handle test systems
-                             connection_pool=False)
+                             insecure=True, connection_pool=False,
+                             project_domain_name="default",
+                             user_domain_name="default")
 
     def _get_nova_client(self):
         return self.nova_client
