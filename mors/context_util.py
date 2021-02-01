@@ -34,7 +34,7 @@ def error_handler(func):
             return func(*args, **kwargs)
         except ValueError as exc:
             traceback.print_exc(file=sys.stdout)
-            return jsonify({'error': 'Invalid input'}), {'message': 'Instance lease exceeds tenant lease'}, 422, {'ContentType': 'application/json'}
+            return jsonify({'error': 'Invalid input'}, {'message': 'Instance lease exceeds tenant lease'}), 422, {'ContentType': 'application/json'}
 
         except IntegrityError as exc:
             traceback.print_exc(file=sys.stdout)
