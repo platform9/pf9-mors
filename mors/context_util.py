@@ -34,7 +34,7 @@ def error_handler(func):
             return func(*args, **kwargs)
         except ValueError as exc:
             traceback.print_exc(file=sys.stdout)
-            return jsonify({'error': 'Invalid input'}), 422, {'ContentType': 'application/json'}
+            return jsonify({'error': '{}'.format(str(exc))}), 422, {'ContentType': 'application/json'}
 
         except IntegrityError as exc:
             traceback.print_exc(file=sys.stdout)
