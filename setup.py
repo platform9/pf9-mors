@@ -29,7 +29,7 @@ setup(name='mors',
       install_requires=['pbr', 'pytz', 'keystoneauth1', 'oslo.i18n',
                         'oslo.serialization', 'oslo.utils',
                         'keystonemiddleware', 'Paste', 'PasteDeploy',
-                        'pip==1.5.2', 'python-novaclient', 'flask',
+                        'pip==19.2', 'python-novaclient', 'flask',
                         'SQLAlchemy', 'sqlalchemy-migrate', 'PyMySQL',
                         'eventlet', 'requests', 'nose', 'proboscis'],
       scripts=['mors/pf9_mors.py', 'mors/mors_manage.py']
