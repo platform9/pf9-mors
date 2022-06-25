@@ -5,7 +5,7 @@ log_filter=-paramiko.transport
 setup_venv() {
     virtualenv -p python3 ${output_dir}/venv
     source ${output_dir}/venv/bin/activate
-    pip install -e . -c https://releases.openstack.org/constraints/upper/stein
+    pip install -e . -c ./support/upper-constraints.txt
 }
 
 run_tests() {
