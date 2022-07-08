@@ -36,11 +36,11 @@ ${APP_RPM_STAGE_DIR}:
 ${APP_RPM_VENV}:
 	mkdir -p $@
 	virtualenv -p python3 $@
-	$@/bin/pip install ${SRC_DIR} -c https://releases.openstack.org/constraints/upper/stein
+	$@/bin/pip install ${SRC_DIR} -c ${SRC_DIR}/support/upper-constraints.txt
 
 stage: $(APP_RPM_DIR) $(APP_RPM_STAGE_DIR) $(APP_RPM_VENV)
 	cp -r $(SRC_DIR)/etc/ $(APP_RPM_STAGE_DIR)/
-	cp $(SRC_DIR)/mors_repo/migrate.cfg $(APP_RPM_VENV)/lib/python3.6/site-packages/mors_repo/
+	cp $(SRC_DIR)/mors_repo/migrate.cfg $(APP_RPM_VENV)/lib/python3.9/site-packages/mors_repo/
 
 ${APP_RPM}: stage
 	echo "RPM build"
