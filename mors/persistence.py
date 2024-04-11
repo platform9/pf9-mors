@@ -62,7 +62,7 @@ def db_connect(transaction=False):
 
 class DbPersistence:
     def __init__(self, db_conn_string):
-        self.engine = create_engine(db_conn_string, poolclass=QueuePool)
+        self.engine = create_engine(db_conn_string, poolclass=QueuePool, pool_pre_ping=True)
         self.metadata = MetaData(bind=self.engine)
         self.tenant_lease = Table('tenant_lease', self.metadata, autoload=True)
         self.instance_lease = Table('instance_lease', self.metadata, autoload=True)
