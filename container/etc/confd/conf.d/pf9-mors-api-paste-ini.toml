@@ -1,0 +1,9 @@
+[template]
+src = 'pf9-mors-api-paste.ini'
+dest = '/etc/pf9/pf9-mors-api-paste.ini'
+owner = 'root'
+mode = '0644'
+keys = [
+    '/region_id',
+    '/services/mors/keystone/password',
+]
