@@ -17,6 +17,8 @@ limitations under the License.
 from novaclient import client
 import logging
 import novaclient
+from keystoneauth1.identity import v3
+from keystoneauth1 import session
 from datetime import datetime
 from .constants import SUCCESS_OK, ERR_NOT_FOUND, ERR_UNKNOWN
 logger = logging.getLogger(__name__)
@@ -31,18 +33,32 @@ def get_vm_data(data):
 class NovaLeaseHandler:
     def __init__(self, conf):
         self.conf = conf
+        self.keystone_sess = self.get_keystone_session()                      
+        self.pf9_project_id = self.keystone_sess.get_project_id()
         self.nova_client = client.Client(self.conf.get("nova", "version"),
                              username=self.conf.get("nova", "user_name"),
                              region_name=self.conf.get("nova", "region_name"),
-                             tenant_id=self.conf.get("nova", "tenant_uuid"),
+                             tenant_id=self.pf9_project_id,
                              api_key=self.conf.get("nova", "password"),
                              auth_url=self.conf.get("nova", "auth_url"),
                              insecure=True, connection_pool=False,
                              project_domain_name="default",
-                             user_domain_name="default")
+                             user_domain_name="default", endpoint_type="internal")
 
     def _get_nova_client(self):
         return self.nova_client
+
+    def get_keystone_session(self):
+        auth_params = {
+             'auth_url': self.conf.get('nova', 'auth_url'),
+             'username': self.conf.get('nova', 'user_name'),
+             'password': self.conf.get('nova', 'password'),
+             'project_name': 'services',
+             'user_domain_id': 'default',
+             'project_domain_id': 'default'
+        }
+        auth = v3.Password(**auth_params)
+        return session.Session(auth=auth) 
 
     def get_all_vms(self, tenant_uuid):
         """

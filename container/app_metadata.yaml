@@ -1,0 +1,20 @@
+---
+- name: pf9-mors
+  endpoints:
+  - name: pf9-mors
+    port: 8989
+    httpPath: "/pf9-mors"
+    rewritePath: "/"
+  - name: protected
+    port: 8989
+    httpPath: "/protected"
+    rewritePath: "/static"
+  - name: pf9-mors-internal
+    port: 8989
+  egresses:
+  - endpoint: broker
+    localPort: 5672
+  memoryRequest: "190Mi"
+  memoryLimit: "190Mi"
+  logfiles:
+  - path: "/var/log/pf9/pf9-mors.log"
