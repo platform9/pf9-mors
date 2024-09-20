@@ -36,7 +36,7 @@ def _get_arg_parser():
 def _configure_logging(conf):
     log_filename = conf.get("DEFAULT", "log_file")
     logging.basicConfig(filename=log_filename,
-                        level=logging.DEBUG,
+                        level=logging.INFO,
                         format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                         datefmt='%m-%d %H:%M')
     handler = logging.handlers.RotatingFileHandler(

@@ -61,6 +61,7 @@ def _verify_instance_lease(instances):
         assert (i_lease.instance_uuid == instance['instance_uuid'])
         assert (i_lease.tenant_uuid == instance['tenant_uuid'])
         assert (i_lease.expiry == instance['expiry'])
+        assert (i_lease.action == instance['action'])
         assert (i_lease.created_by == instance["created_by"])
         if "updated_by" in instance.keys():
             assert (i_lease.updated_by == instance["updated_by"])
@@ -71,13 +72,16 @@ def _verify_instance_lease(instances):
 def test_apis():
     tenants = {"tenant-1": { "user": "a@xyz.com",
                              "expiry_mins": 3,
+                             "action": "delete",
                              "tenant_created_date": datetime.utcnow()},
                "tenant-2": { "user": "c@xyz.com",
                              "expiry_mins": 1,
+                             "action": "delete",
                              "tenant_created_date": datetime.utcnow()}}
 
     for tenant in tenants:
         db_persistence.add_tenant_lease(tenant, tenants[tenant]["expiry_mins"],
+                                        tenants[tenant]["action"],
                                         tenants[tenant]["user"],
                                         tenants[tenant]["tenant_created_date"])
     _verify_tenant_lease(tenants)
@@ -91,6 +95,7 @@ def test_apis():
         tenants[tenant]["updated_at"] = tenant_updated_date
         tenant_values = tenants[tenant]
         db_persistence.update_tenant_lease(tenant, tenant_values["expiry_mins"],
+                                           tenant_values["action"],
                                            tenant_values["updated_by"],
                                            tenant_values["updated_at"])
     _verify_tenant_lease(tenants)
@@ -100,18 +105,21 @@ def test_apis():
     instances = {"instance-1": {"instance_uuid": "instance-1",
                                 "tenant_uuid": "tenant-1",
                                 "expiry": now,
+                                "action": "delete",
                                 "created_at": now,
                                 "created_by": "d@xyz.com"},
                  "instance-2": {"instance_uuid": "instance-2",
                                 "tenant_uuid": "tenant-2",
                                 "expiry": now + timedelta(seconds=60),
+                                "action": "delete",
                                 "created_at": now + timedelta(seconds=60),
                                 "created_by": "e@xyz.com"}}
     now = datetime.utcnow()
     for instance_uuid in instances:
         instance = instances[instance_uuid]
         db_persistence.add_instance_lease(instance['instance_uuid'], instance['tenant_uuid'],
-                                          instance['expiry'], instance["created_by"],
+                                          instance['expiry'], instance['action'],
+                                          instance["created_by"],
                                           instance["created_at"])
     _verify_instance_lease(instances)
 
@@ -125,7 +133,8 @@ def test_apis():
     for instance_uuid in instances:
         instance = instances[instance_uuid]
         db_persistence.update_instance_lease(instance['instance_uuid'], instance['tenant_uuid'],
-                                             instance['expiry'], instance["created_by"],
+                                             instance['expiry'], instance['action'],
+                                             instance["created_by"],
                                              instance["updated_at"])
 
     _verify_instance_lease(instances)

@@ -23,7 +23,7 @@ import logging
 from .leasehandler.constants import SUCCESS_OK, ERR_UNKNOWN, ERR_NOT_FOUND
 
 logger = logging.getLogger(__name__)
-
+DEFAULT_ACTION = 'power off'
 
 def get_tenant_lease_data(data):
     """
@@ -33,6 +33,7 @@ def get_tenant_lease_data(data):
     """
     return {'vm_lease_policy': {'tenant_uuid': data['tenant_uuid'],
                                 'expiry_mins': data['expiry_mins'],
+                                'action': data['action'],
                                 'created_at': data['created_at'],
                                 'created_by': data['created_by'],
                                 'updated_at': data['updated_at'],
@@ -48,6 +49,7 @@ def get_vm_lease_data(data):
     return {'instance_uuid': data['instance_uuid'],
             'tenant_uuid': data['tenant_uuid'],
             'expiry': data['expiry'],
+            'action': data['action'],
             'created_at': data['created_at'],
             'created_by': data['created_by'],
             'updated_at': data['updated_at'],
@@ -67,10 +69,15 @@ class LeaseManager:
 
     def add_tenant_lease(self, context, tenant_obj):
         logger.info("Adding tenant lease %s", tenant_obj)
-        self.domain_mgr.add_tenant_lease(
-            tenant_obj['tenant_uuid'],
-            tenant_obj['expiry_mins'],
-            context.user_id,
+        if 'action' in tenant_obj:                                        
+            action = tenant_obj['action']                                 
+        else:                                                             
+            action = DEFAULT_ACTION  
+        self.domain_mgr.add_tenant_lease(                                 
+            tenant_obj['tenant_uuid'],                                          
+            tenant_obj['expiry_mins'],                                          
+            action,                                                             
+            context.user_id,                                                    
             datetime.utcnow())
 
     def update_tenant_lease(self, context, tenant_obj):
@@ -78,6 +85,7 @@ class LeaseManager:
         self.domain_mgr.update_tenant_lease(
             tenant_obj['tenant_uuid'],
             tenant_obj['expiry_mins'],
+            tenant_obj['action'],
             context.user_id,
             datetime.utcnow())
 
@@ -125,11 +133,16 @@ class LeaseManager:
         logger.info("Add instance lease %s", instance_lease_obj)
         tenant_lease = self.domain_mgr.get_tenant_lease(tenant_uuid)
         if not self.check_instance_lease_violation(instance_lease_obj, tenant_lease):
-            self.domain_mgr.add_instance_lease(instance_lease_obj['instance_uuid'],
-                                           tenant_uuid,
-                                           instance_lease_obj['expiry'],
-                                           context.user_id,
-                                           datetime.utcnow())
+            if 'action' in instance_lease_obj:                            
+                action = instance_lease_obj['action']                           
+            else:                                                               
+                action = DEFAULT_ACTION      
+            self.domain_mgr.add_instance_lease(instance_lease_obj['instance_uuid'],  
+                                           tenant_uuid,                              
+                                           instance_lease_obj['expiry'],             
+                                           action,                                   
+                                           context.user_id,                          
+                                           datetime.utcnow())  
         else:
             raise ValueError("Instance lease exceeds tenant lease")
 
@@ -140,6 +153,7 @@ class LeaseManager:
             self.domain_mgr.update_instance_lease(instance_lease_obj['instance_uuid'],
                                               tenant_uuid,
                                               instance_lease_obj['expiry'],
+                                              instance_lease_obj['action'],
                                               context.user_id,
                                               datetime.utcnow())
         else:
@@ -154,18 +168,25 @@ class LeaseManager:
 
     # Could have used a generator here, would save memory but wonder if it is a good idea given the error conditions
     # This is a simple implementation which goes and deletes VMs one by one
-    def _get_vms_to_delete_for_tenant(self, tenant_uuid, expiry_mins):
+    def _get_vms_to_delete_or_poweroff_for_tenant(self, tenant_uuid, expiry_mins, action):
         vms_to_delete = []
+        vms_to_poweroff = []
         vm_ids_to_delete = set()
+        vm_ids_to_poweroff = set()
         do_not_delete = set()
         now = datetime.utcnow()
         add_seconds = timedelta(seconds=expiry_mins*60)
         instance_leases = self.get_tenant_and_associated_instance_leases(None, tenant_uuid)['all_vms']
         for i_lease in instance_leases:
             if now > i_lease['expiry']:
-                logger.info("Explicit lease for %s queueing for deletion", i_lease['instance_uuid'])
-                vms_to_delete.append(i_lease)
-                vm_ids_to_delete.add(i_lease['instance_uuid'])
+                if i_lease['action'] == 'delete':
+                     logger.info("Explicit lease for %s queueing for deletion", i_lease['instance_uuid'])
+                     vms_to_delete.append(i_lease)
+                     vm_ids_to_delete.add(i_lease['instance_uuid'])
+                else:
+                     logger.info("Explicit lease for %s queueing up to Power off", i_lease['instance_uuid'])
+                     vms_to_poweroff.append(i_lease)
+                     vm_ids_to_poweroff.add(i_lease['instance_uuid'])
             else:
                 do_not_delete.add(i_lease['instance_uuid'])
                 logger.debug("Ignoring vm, vm not expired yet %s", i_lease['instance_uuid'])
@@ -174,29 +195,40 @@ class LeaseManager:
         for vm in tenant_vms:
             expiry_date = vm['created_at'] + add_seconds
             if now > expiry_date and vm['instance_uuid'] not in vm_ids_to_delete \
+                                 and vm['instance_uuid'] not in vms_to_poweroff \
                                  and vm['instance_uuid'] not in do_not_delete:
-                logger.info("Instance %s queued up for deletion creation date %s", vm['instance_uuid'],
+                if action == 'delete':
+                     logger.info("Instance %s queued up for deletion, creation date %s", vm['instance_uuid'],
                             vm['created_at'])
-                vms_to_delete.append(vm)
+                     vms_to_delete.append(vm)
+                else:
+                     logger.info("Instance %s queued up to Power off, creation date %s", vm['instance_uuid'],
+                            vm['created_at'])
+                     vms_to_poweroff.append(vm)
             else:
-                logger.debug("Ignoring vm, vm not expired yet or already deleted %s, %s", vm['instance_uuid'],
+                logger.debug("Ignoring vm, vm not expired yet or already powered off or deleted %s, %s", vm['instance_uuid'],
                              vm['created_at'])
 
-        return vms_to_delete
+        return (vms_to_delete, vms_to_poweroff)
 
-    def _delete_vms_for_tenant(self, t_lease):
-        tenant_vms_to_delete = self._get_vms_to_delete_for_tenant(t_lease['tenant_uuid'], t_lease['expiry_mins'])
-
-        # Keep it simple and delete them serially
-        result = self.lease_handler.delete_vms(tenant_vms_to_delete)
+    def _delete_or_poweroff_vms_for_tenant(self, t_lease):
+        tenant_vms_to_delete, tenant_vms_to_poweroff = self._get_vms_to_delete_or_poweroff_for_tenant(t_lease['tenant_uuid'], t_lease['expiry_mins'], t_lease['action'])
 
         remove_from_db = []
-
-        for vm_result in result.items():
-            # If either the VM has been successfully deleted or has already been deleted
-            # Remove from our database
-            if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
-                remove_from_db.append(vm_result[0])
+        # Keep it simple and delete them serially
+        if tenant_vms_to_delete:
+            result = self.lease_handler.delete_vms(tenant_vms_to_delete)
+            for vm_result in result.items():  
+                # If either the VM has been successfully deleted or has already been deleted
+                if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
+                    remove_from_db.append(vm_result[0])
+ 
+        if tenant_vms_to_poweroff:
+            result = self.lease_handler.poweroff_vms(tenant_vms_to_poweroff)
+            for vm_result in result.items():
+                # If either the VM has been successfully powered off or has already been powered off
+                if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
+                    remove_from_db.append(vm_result[0])        
 
         if len(remove_from_db) > 0:
             logger.info("Removing vms %s from db", remove_from_db)
@@ -206,7 +238,7 @@ class LeaseManager:
         # Delete the cleanup
         tenant_leases = self.domain_mgr.get_all_tenant_leases()
         for t_lease in tenant_leases:
-            self._delete_vms_for_tenant(t_lease)
+            self._delete_or_poweroff_vms_for_tenant(t_lease)
 
         # Sleep again for sleep_seconds
         spawn_after(self.sleep_seconds, self.run)
