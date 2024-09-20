@@ -76,17 +76,17 @@ class DbPersistence:
         return conn.execute(self.tenant_lease.select(self.tenant_lease.c.tenant_uuid == tenant_uuid)).first()
 
     @db_connect(transaction=True)
-    def add_tenant_lease(self, conn, tenant_uuid, expiry_mins, created_by, created_at):
-        logger.debug("Adding tenant lease %s %d %s %s", tenant_uuid, expiry_mins, str(created_at), created_by)
+    def add_tenant_lease(self, conn, tenant_uuid, expiry_mins, action, created_by, created_at):
+        logger.debug("Adding tenant lease %s %d %s %s %s", tenant_uuid, expiry_mins, action, str(created_at), created_by)
         conn.execute(self.tenant_lease.insert(), tenant_uuid=tenant_uuid, expiry_mins=expiry_mins,
-                     created_at=created_at, created_by=created_by)
+                     action=action, created_at=created_at, created_by=created_by)
 
     @db_connect(transaction=True)
-    def update_tenant_lease(self, conn, tenant_uuid, expiry_mins, updated_by, updated_at):
-        logger.debug("Updating tenant lease %s %d %s %s", tenant_uuid, expiry_mins, str(updated_at), updated_by)
+    def update_tenant_lease(self, conn, tenant_uuid, expiry_mins, action, updated_by, updated_at):
+        logger.debug("Updating tenant lease %s %d %s %s %s", tenant_uuid, expiry_mins, action, str(updated_at), updated_by)
         conn.execute(self.tenant_lease.update().where(
             self.tenant_lease.c.tenant_uuid == tenant_uuid).
-                     values(expiry_mins=expiry_mins,
+                     values(expiry_mins=expiry_mins, action=action,
                             updated_at=updated_at, updated_by=updated_by))
 
     @db_connect(transaction=True)
@@ -107,18 +107,18 @@ class DbPersistence:
                         self.instance_lease.c.instance_uuid == instance_uuid))).first()
 
     @db_connect(transaction=True)
-    def add_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, created_by, created_at):
-        logger.debug("Adding instance lease %s %s %s %s", instance_uuid, tenant_uuid, expiry, created_by)
+    def add_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, action, created_by, created_at):
+        logger.debug("Adding instance lease %s %s %s %s %s", instance_uuid, tenant_uuid, expiry, action, created_by)
         conn.execute(self.instance_lease.insert(), instance_uuid=instance_uuid, tenant_uuid=tenant_uuid,
-                     expiry=expiry,
+                     expiry=expiry, action=action,
                      created_at=created_at, created_by=created_by)
 
     @db_connect(transaction=True)
-    def update_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, updated_by, updated_at):
-        logger.debug("Updating instance lease %s %s %s %s", instance_uuid, tenant_uuid, expiry, updated_by)
+    def update_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, action, updated_by, updated_at):
+        logger.debug("Updating instance lease %s %s %s %s %s", instance_uuid, tenant_uuid, expiry, action, updated_by)
         conn.execute(self.instance_lease.update().where(
             self.instance_lease.c.instance_uuid == instance_uuid).values
-                     (tenant_uuid=tenant_uuid, expiry=expiry,
+                     (tenant_uuid=tenant_uuid, expiry=expiry, action=action,
                       updated_at=updated_at, updated_by=updated_by))
 
     @db_connect(transaction=True)

@@ -75,6 +75,21 @@ class NovaLeaseHandler:
 
         return []
 
+    def _poweroff_vm(self, nova, vm_uuid):
+        try:
+            logger.info("powering off VM %s", vm_uuid)
+            nova.servers.stop(vm_uuid)
+            return SUCCESS_OK
+        except novaclient.exceptions.NotFound:
+            return ERR_NOT_FOUND
+        except Exception as e:
+            # if vm is in stopped state return success
+            if "vm_state stopped" in str(e):
+                return SUCCESS_OK
+            else:
+                logger.exception("Error powering off vm %s", vm_uuid)
+                return ERR_UNKNOWN
+
     def _delete_vm(self, nova, vm_uuid):
         try:
             logger.info("Deleting VM %s", vm_uuid)
@@ -85,6 +100,23 @@ class NovaLeaseHandler:
         except Exception as e:
             logger.exception("Error deleting vm %s", vm_uuid)
             return ERR_UNKNOWN
+
+    def poweroff_vms(self, vms):
+        """
+        Power off a VM on a given tenant
+        :param tenant_uuid:
+        :param vm_uuid:
+        :return: dictionary of vm_id to result
+        """
+        result = {}
+        try:
+            with self._get_nova_client() as nova:
+                for vm in vms:
+                    result[vm['instance_uuid']] = self._poweroff_vm(nova, vm['instance_uuid'])
+            return result
+        except Exception as e:
+            logger.exception("Error powering off vm %s", vms)
+        return result
 
     def delete_vms(self, vms):
         """

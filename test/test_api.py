@@ -62,6 +62,8 @@ instance_id1 = "instanceid-1-t-1"
 instance_id2 = "instanceid-2-t-1"
 instance_id3 = "instanceid-3-t-2"
 
+action1 = 'delete'
+action2 = 'power off'
 expiry_mins1 = 4
 port = 8080
 
@@ -107,7 +109,7 @@ def initialize():
 @test(depends_on=[initialize])
 def test_create_tenant():
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1,
-                      json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": expiry_mins1}},
+                      json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": expiry_mins1, "action": action1}},
                       headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 200)
@@ -116,7 +118,7 @@ def test_create_tenant():
 @test(depends_on=[test_create_tenant])
 def test_update_tenant():
     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1,
-                     json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": 3}}, headers=headers)
+                     json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": 3, "action": action1}}, headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 200)
 
@@ -140,7 +142,7 @@ def test_get_tenant():
 def test_create_tenant_neg():
     # Try creating again and it should result in error
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1,
-                      json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": expiry_mins1}},
+                      json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": expiry_mins1, "action": action1}},
                       headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 409)
@@ -152,7 +154,7 @@ def test_create_instance():
     expiry = datetime.utcnow()
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
-                      json={"instance_uuid": instance_id1, "expiry": expiry_str},
+                      json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
                       headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 200)
@@ -170,7 +172,7 @@ def test_update_instance():
     expiry = datetime.utcnow()
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
-                      json={"instance_uuid": instance_id1, "expiry": expiry_str},
+                      json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
                       headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 200)
@@ -180,7 +182,7 @@ def test_update_instance_violation():
     expiry = datetime.utcnow() + timedelta(days=4)
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
-                      json={"instance_uuid": instance_id1, "expiry": expiry_str},
+                      json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
                       headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 422)
@@ -209,7 +211,7 @@ def test_create_instance2():
     expiry = datetime.utcnow()
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id2,
-                      json={"instance_uuid": instance_id2, "expiry": expiry_str},
+                      json={"instance_uuid": instance_id2, "expiry": expiry_str, "action": action2},
                       headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 200)
@@ -227,7 +229,7 @@ def test_delete_instance_lease():
 @test(depends_on=[test_deleted_instance])
 def test_create_tenant2():
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2,
-                      json={"vm_lease_policy": {"tenant_uuid": tenant_id2, "expiry_mins": expiry_mins1}},
+                      json={"vm_lease_policy": {"tenant_uuid": tenant_id2, "expiry_mins": expiry_mins1, "action": action2}},
                       headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 200)
@@ -239,7 +241,7 @@ def test_create_instance3():
     expiry = datetime.utcnow()
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2 + '/instance/' + instance_id3,
-                      json={"tenant_uuid": tenant_id2, "instance_uuid": instance_id3, "expiry": expiry_str},
+                      json={"tenant_uuid": tenant_id2, "instance_uuid": instance_id3, "expiry": expiry_str, "action": action2},
                       headers=headers)
     logger.debug(r.text)
     assert_equal(r.status_code, 200)
