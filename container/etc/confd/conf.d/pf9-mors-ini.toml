@@ -7,4 +7,5 @@ keys = [
     '/region_id',
     '/services/mors/keystone/password',
     '/services/mors/db/password',
+    '/services/mors/db/host',
 ]
