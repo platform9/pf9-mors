@@ -36,11 +36,6 @@ RUN pip install mors-sdist.tgz -r requirements.txt
 
 EXPOSE 8989
 CMD \
-    echo [DEFAULT] \
-         $'\n'db_conn = mysql://mors:$PASSWORD@mysql.$NAMESPACE.svc.cluster.local:3306/mors \
-      $'\n'log_file=/var/log/pf9/pf9-mors.log \
-      $'\n'repo=/usr/local/lib/python3.9/site-packages/mors_repo > /etc/pf9/pf9-mors.ini && \ 
-    python /opt/pf9/pf9-mors/bin/mors_manage.py --command db_sync && \
     supervisord -c /etc/supervisord.conf
 
 ARG VERSION
