@@ -46,11 +46,19 @@ $(BLDROOT):
 	mkdir -p $@
 
 define image_build
-	docker build -f Dockerfile --rm -t $(CONTAINER_IMG):$(1) \
+	@if ! docker buildx inspect pcd-graviton >/dev/null 2>&1; then \
+		docker buildx create --name pcd-graviton --use --bootstrap; \
+	else \
+		docker buildx use pcd-graviton; \
+	fi && \
+	docker buildx build --platform linux/arm64,linux/amd64 \
+		-f Dockerfile \
+		-t $(CONTAINER_IMG):$(1) \
 		--build-arg BUILD_ID=$(BUILD_ID) \
 		--build-arg VERSION=$(PF9_VERSION) \
 		--build-arg BRANCH="$(BRANCH_NAME)" \
 		--build-arg APP_METADATA=`cat $(APP_METADATA_JSON)` \
+		--push \
 		$(STAGE)
 	echo -ne "$(1)" >$(SRCROOT)/build/container-tag
 endef
@@ -66,7 +74,7 @@ define image_push
 endef
 
 push: image
-	$(call image_push,$(IMAGE_TAG))
+#	$(call image_push,$(IMAGE_TAG))
 
 clean:
 	rm -rf $(STAGE)
