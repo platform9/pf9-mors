@@ -1,0 +1,329 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2025-04-27T08:01:23.822398779Z",
+  "ArtifactName": ".",
+  "ArtifactType": "filesystem",
+  "Metadata": {
+    "ImageConfig": {
+      "architecture": "",
+      "created": "0001-01-01T00:00:00Z",
+      "os": "",
+      "rootfs": {
+        "type": "",
+        "diff_ids": null
+      },
+      "config": {}
+    }
+  },
+  "Results": [
+    {
+      "Target": "container/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2019-10906",
+          "PkgName": "Jinja2",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/jinja2@2.10",
+            "UID": "4f8c9f418b9f3c3f"
+          },
+          "InstalledVersion": "2.10",
+          "FixedVersion": "2.10.1",
+          "Status": "fixed",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-10906",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "python-jinja2: str.format_map allows sandbox escape",
+          "Description": "In Pallets Jinja before 2.10.1, str.format_map allows a sandbox escape.",
+          "Severity": "HIGH",
+          "VendorSeverity": {
+            "amazon": 3,
+            "azure": 3,
+            "ghsa": 3,
+            "nvd": 3,
+            "oracle-oval": 3,
+            "redhat": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N",
+              "V3Score": 8.6
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:N/A:N",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N",
+              "V2Score": 5,
+              "V3Score": 8.6
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H",
+              "V3Score": 9
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-05/msg00030.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-06/msg00064.html",
+            "https://access.redhat.com/errata/RHSA-2019:1152",
+            "https://access.redhat.com/errata/RHSA-2019:1237",
+            "https://access.redhat.com/errata/RHSA-2019:1329",
+            "https://access.redhat.com/security/cve/CVE-2019-10906",
+            "https://github.com/advisories/GHSA-462w-v97r-4m45",
+            "https://github.com/pallets/jinja",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/jinja2/PYSEC-2019-217.yaml",
+            "https://linux.oracle.com/cve/CVE-2019-10906.html",
+            "https://linux.oracle.com/errata/ELSA-2019-1152.html",
+            "https://lists.apache.org/thread.html/09fc842ff444cd43d9d4c510756fec625ef8eb1175f14fd21de2605f%40%3Cdevnull.infra.apache.org%3E",
+            "https://lists.apache.org/thread.html/09fc842ff444cd43d9d4c510756fec625ef8eb1175f14fd21de2605f@%3Cdevnull.infra.apache.org%3E",
+            "https://lists.apache.org/thread.html/2b52b9c8b9d6366a4f1b407a8bde6af28d9fc73fdb3b37695fd0d9ac%40%3Cdevnull.infra.apache.org%3E",
+            "https://lists.apache.org/thread.html/2b52b9c8b9d6366a4f1b407a8bde6af28d9fc73fdb3b37695fd0d9ac@%3Cdevnull.infra.apache.org%3E",
+            "https://lists.apache.org/thread.html/320441dccbd9a545320f5f07306d711d4bbd31ba43dc9eebcfc602df%40%3Cdevnull.infra.apache.org%3E",
+            "https://lists.apache.org/thread.html/320441dccbd9a545320f5f07306d711d4bbd31ba43dc9eebcfc602df@%3Cdevnull.infra.apache.org%3E",
+            "https://lists.apache.org/thread.html/46c055e173b52d599c648a98199972dbd6a89d2b4c4647b0500f2284%40%3Cdevnull.infra.apache.org%3E",
+            "https://lists.apache.org/thread.html/46c055e173b52d599c648a98199972dbd6a89d2b4c4647b0500f2284@%3Cdevnull.infra.apache.org%3E",
+            "https://lists.apache.org/thread.html/57673a78c4d5c870d3f21465c7e2946b9f8285c7c57e54c2ae552f02%40%3Ccommits.airflow.apache.org%3E",
+            "https://lists.apache.org/thread.html/57673a78c4d5c870d3f21465c7e2946b9f8285c7c57e54c2ae552f02@%3Ccommits.airflow.apache.org%3E",
+            "https://lists.apache.org/thread.html/7f39f01392d320dfb48e4901db68daeece62fd60ef20955966739993%40%3Ccommits.airflow.apache.org%3E",
+            "https://lists.apache.org/thread.html/7f39f01392d320dfb48e4901db68daeece62fd60ef20955966739993@%3Ccommits.airflow.apache.org%3E",
+            "https://lists.apache.org/thread.html/b2380d147b508bbcb90d2cad443c159e63e12555966ab4f320ee22da%40%3Ccommits.airflow.apache.org%3E",
+            "https://lists.apache.org/thread.html/b2380d147b508bbcb90d2cad443c159e63e12555966ab4f320ee22da@%3Ccommits.airflow.apache.org%3E",
+            "https://lists.apache.org/thread.html/f0c4a03418bcfe70c539c5dbaf99c04c98da13bfa1d3266f08564316%40%3Ccommits.airflow.apache.org%3E",
+            "https://lists.apache.org/thread.html/f0c4a03418bcfe70c539c5dbaf99c04c98da13bfa1d3266f08564316@%3Ccommits.airflow.apache.org%3E",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/DSW3QZMFVVR7YE3UT4YRQA272TYAL5AF/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/QCDYIS254EJMBNWOG4S5QY6AOTOR4TZU/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/TS7IVZAJBWOHNRDMFJDIZVFCMRP6YIUQ/",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/DSW3QZMFVVR7YE3UT4YRQA272TYAL5AF",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/QCDYIS254EJMBNWOG4S5QY6AOTOR4TZU",
+            "https://lists.fedoraproject.org/archives/list/package-announce@lists.fedoraproject.org/message/TS7IVZAJBWOHNRDMFJDIZVFCMRP6YIUQ",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-10906",
+            "https://palletsprojects.com/blog/jinja-2-10-1-released",
+            "https://palletsprojects.com/blog/jinja-2-10-1-released/",
+            "https://ubuntu.com/security/notices/USN-4011-1",
+            "https://ubuntu.com/security/notices/USN-4011-2",
+            "https://usn.ubuntu.com/4011-1",
+            "https://usn.ubuntu.com/4011-1/",
+            "https://usn.ubuntu.com/4011-2",
+            "https://usn.ubuntu.com/4011-2/",
+            "https://www.cve.org/CVERecord?id=CVE-2019-10906"
+          ],
+          "PublishedDate": "2019-04-07T00:29:00.213Z",
+          "LastModifiedDate": "2024-11-21T04:20:06.317Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-36039",
+          "PkgName": "PyMySQL",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/pymysql@0.9.3",
+            "UID": "5f7873eb82d60868"
+          },
+          "InstalledVersion": "0.9.3",
+          "FixedVersion": "1.1.1",
+          "Status": "fixed",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-36039",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "python-pymysql: SQL injection if used with untrusted JSON input",
+          "Description": "PyMySQL through 1.1.0 allows SQL injection if used with untrusted JSON input because keys are not escaped by escape_dict.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-89"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "azure": 2,
+            "ghsa": 4,
+            "oracle-oval": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 6.3
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2024:9194",
+            "https://access.redhat.com/security/cve/CVE-2024-36039",
+            "https://bugzilla.redhat.com/2282821",
+            "https://errata.almalinux.org/9/ALSA-2024-9194.html",
+            "https://github.com/PyMySQL/PyMySQL",
+            "https://github.com/PyMySQL/PyMySQL/commit/521e40050cb386a499f68f483fefd144c493053c",
+            "https://github.com/PyMySQL/PyMySQL/releases/tag/v1.1.1",
+            "https://github.com/advisories/GHSA-v9hf-5j83-6xpp",
+            "https://linux.oracle.com/cve/CVE-2024-36039.html",
+            "https://linux.oracle.com/errata/ELSA-2024-9194.html",
+            "https://lists.debian.org/debian-lts-announce/2024/05/msg00017.html",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/23VXBV34GFRICCVYZ6KFMSSWY5UEXCF5",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/23VXBV34GFRICCVYZ6KFMSSWY5UEXCF5/",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/35VOJS3SRJNLQIO7YTZFNM6RWHIHWTMK",
+            "https://lists.fedoraproject.org/archives/list/package-announce%40lists.fedoraproject.org/message/35VOJS3SRJNLQIO7YTZFNM6RWHIHWTMK/",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-36039",
+            "https://ubuntu.com/security/notices/USN-6801-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-36039"
+          ],
+          "PublishedDate": "2024-05-21T16:15:26.293Z",
+          "LastModifiedDate": "2024-11-21T16:15:24.847Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2019-7548",
+          "PkgName": "SQLAlchemy",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/sqlalchemy@1.2.18",
+            "UID": "41d04913e17c6cf7"
+          },
+          "InstalledVersion": "1.2.18",
+          "FixedVersion": "1.2.19",
+          "Status": "fixed",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-7548",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "python-sqlalchemy: SQL Injection when the group_by parameter can be controlled",
+          "Description": "SQLAlchemy 1.2.17 has SQL Injection when the group_by parameter can be controlled.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-89"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "ghsa": 4,
+            "nvd": 3,
+            "oracle-oval": 2,
+            "redhat": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:M/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V2Score": 6.8,
+              "V3Score": 7.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 7.3
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00087.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-09/msg00010.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-09/msg00016.html",
+            "https://access.redhat.com/errata/RHSA-2019:0981",
+            "https://access.redhat.com/errata/RHSA-2019:0984",
+            "https://access.redhat.com/security/cve/CVE-2019-7548",
+            "https://errata.almalinux.org/8/ALSA-2019-0984.html",
+            "https://github.com/advisories/GHSA-38fc-9xqv-7f7q",
+            "https://github.com/no-security/sqlalchemy_test",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/sqlalchemy/PYSEC-2019-124.yaml",
+            "https://github.com/sqlalchemy/sqlalchemy",
+            "https://github.com/sqlalchemy/sqlalchemy/issues/4481#issuecomment-461204518",
+            "https://github.com/sqlalchemy/sqlalchemy/issues/4510",
+            "https://linux.oracle.com/cve/CVE-2019-7548.html",
+            "https://linux.oracle.com/errata/ELSA-2019-0984.html",
+            "https://lists.debian.org/debian-lts-announce/2019/03/msg00020.html",
+            "https://lists.debian.org/debian-lts-announce/2021/11/msg00005.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-7548",
+            "https://www.cve.org/CVERecord?id=CVE-2019-7548",
+            "https://www.oracle.com/security-alerts/cpujan2021.html"
+          ],
+          "PublishedDate": "2019-02-06T21:29:01.063Z",
+          "LastModifiedDate": "2024-11-21T04:48:18.397Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-30861",
+          "PkgName": "flask",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/flask@1.0.2",
+            "UID": "6bf84d663765f877"
+          },
+          "InstalledVersion": "1.0.2",
+          "FixedVersion": "2.3.2, 2.2.5",
+          "Status": "fixed",
+          "Layer": {},
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-30861",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "flask: Possible disclosure of permanent session cookie due to missing Vary: Cookie header",
+          "Description": "Flask is a lightweight WSGI web application framework. When all of the following conditions are met, a response containing data intended for one client may be cached and subsequently sent by the proxy to other clients. If the proxy also caches `Set-Cookie` headers, it may send one client's `session` cookie to other clients. The severity depends on the application's use of the session and the proxy's behavior regarding cookies. The risk depends on all these conditions being met.\n\n1. The application must be hosted behind a caching proxy that does not strip cookies or ignore responses with cookies.\n2. The application sets `session.permanent = True`\n3. The application does not access or modify the session at any point during a request.\n4. `SESSION_REFRESH_EACH_REQUEST` enabled (the default).\n5. The application does not set a `Cache-Control` header to indicate that a page is private or should not be cached.\n\nThis happens because vulnerable versions of Flask only set the `Vary: Cookie` header when the session is accessed or modified, not when it is refreshed (re-sent to update the expiration) without being accessed or modified. This issue has been fixed in versions 2.3.2 and 2.2.5.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-539"
+          ],
+          "VendorSeverity": {
+            "amazon": 3,
+            "ghsa": 3,
+            "nvd": 3,
+            "oracle-oval": 3,
+            "redhat": 3,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2023-30861",
+            "https://github.com/pallets/flask",
+            "https://github.com/pallets/flask/commit/70f906c51ce49c485f1d355703e9cc3386b1cc2b",
+            "https://github.com/pallets/flask/commit/8646edca6f47e2cd57464081b3911218d4734f8d (2.2.5)",
+            "https://github.com/pallets/flask/commit/8705dd39c4fa563ea0fe0bf84c85da8fcc98b88d (2.3.2)",
+            "https://github.com/pallets/flask/commit/afd63b16170b7c047f5758eb910c416511e9c965",
+            "https://github.com/pallets/flask/releases/tag/2.2.5",
+            "https://github.com/pallets/flask/releases/tag/2.3.2",
+            "https://github.com/pallets/flask/security/advisories/GHSA-m2qf-hxjv-5gpq",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/flask/PYSEC-2023-62.yaml",
+            "https://linux.oracle.com/cve/CVE-2023-30861.html",
+            "https://linux.oracle.com/errata/ELSA-2023-12710.html",
+            "https://lists.debian.org/debian-lts-announce/2023/08/msg00024.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-30861",
+            "https://security.netapp.com/advisory/ntap-20230818-0006",
+            "https://security.netapp.com/advisory/ntap-20230818-0006/",
+            "https://ubuntu.com/security/notices/USN-6111-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-30861",
+            "https://www.debian.org/security/2023/dsa-5442"
+          ],
+          "PublishedDate": "2023-05-02T18:15:52.373Z",
+          "LastModifiedDate": "2024-11-21T08:00:59.623Z"
+        }
+      ]
+    }
+  ]
+}

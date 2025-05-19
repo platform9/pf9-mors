@@ -1,0 +1,36 @@
+### 🛡️  Critical/High Vulnerability
+```
+File: container/requirements.txt
+VulnerabilityID: CVE-2019-10906
+Package: Jinja2 2.10
+Severity: HIGH
+Title: python-jinja2: str.format_map allows sandbox escape
+```
+
+### 🛡️  Critical/High Vulnerability
+```
+File: container/requirements.txt
+VulnerabilityID: CVE-2024-36039
+Package: PyMySQL 0.9.3
+Severity: CRITICAL
+Title: python-pymysql: SQL injection if used with untrusted JSON input
+```
+
+### 🛡️  Critical/High Vulnerability
+```
+File: container/requirements.txt
+VulnerabilityID: CVE-2019-7548
+Package: SQLAlchemy 1.2.18
+Severity: CRITICAL
+Title: python-sqlalchemy: SQL Injection when the group_by parameter can be controlled
+```
+
+### 🛡️  Critical/High Vulnerability
+```
+File: container/requirements.txt
+VulnerabilityID: CVE-2023-30861
+Package: flask 1.0.2
+Severity: HIGH
+Title: flask: Possible disclosure of permanent session cookie due to missing Vary: Cookie header
+```
+
