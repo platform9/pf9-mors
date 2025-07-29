@@ -10,8 +10,8 @@ tenant_lease = Table(
     Column('action', String(40)),
     Column('created_at', DateTime),
     Column('updated_at', DateTime),
-    Column('created_by', String(40)),
-    Column('updated_by', String(40))
+    Column('created_by', String(64)),
+    Column('updated_by', String(64))
 )
 
 vm_lease = Table(
@@ -22,8 +22,8 @@ vm_lease = Table(
     Column('action', String(40)),
     Column('created_at', DateTime),
     Column('updated_at', DateTime),
-    Column('created_by', String(40)),
-    Column('updated_by', String(40))
+    Column('created_by', String(64)),
+    Column('updated_by', String(64))
 )
 
 def upgrade(migrate_engine):
