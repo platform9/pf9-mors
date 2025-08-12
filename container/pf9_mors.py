@@ -37,18 +37,7 @@ def _get_arg_parser():
 def _configure_logging(conf):
     log_level = logging.INFO
     log_file = conf.get("DEFAULT", "log_file")
-    log_format = logging.Formatter('mors %(asctime)s %(name)-12s %(levelname)s %(message)s')
-
-    # logging.basicConfig(filename=log_filename,
-    #                     level=logging.INFO,
-    #                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-    #                     datefmt='%m-%d %H:%M')
-    # handler = logging.handlers.RotatingFileHandler(
-    #     log_filename, maxBytes=1024 * 1024 * 5, backupCount=5)
-    # logging.root.addHandler(handler)
-
-    ### new code
-
+    log_format = logging.Formatter('%(asctime)s %(name)-12s %(levelname)s %(message)s')
     logger = logging.getLogger(ROOT_LOGGER)
     logger.setLevel(logging.INFO)
     file_handler = logging.handlers.RotatingFileHandler(log_file,
@@ -64,14 +53,6 @@ def _configure_logging(conf):
         handler.setLevel(log_level)
         handler.setFormatter(log_format)
         logger.addHandler(handler)
-
-    ### new code end
-    
-    
-    ### testing
-    logger.info("checking if this works")
-    logger.warning("checking if this works")
-    ### testing end
 
 
 def start_server(conf, paste_ini):

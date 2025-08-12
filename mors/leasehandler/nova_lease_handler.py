@@ -46,8 +46,7 @@ class NovaLeaseHandler:
                              insecure=True, connection_pool=False,
                              project_domain_name="default",
                              user_domain_name="default",
-                             endpoint_type="internal",
-                             logger=logger)
+                             endpoint_type="internal")
 
     def _get_nova_client(self):
         return self.nova_client
