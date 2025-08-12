@@ -45,7 +45,9 @@ class NovaLeaseHandler:
                              auth_url=self.conf.get("nova", "auth_url"),
                              insecure=True, connection_pool=False,
                              project_domain_name="default",
-                             user_domain_name="default", endpoint_type="internal", logger=logger)
+                             user_domain_name="default",
+                             endpoint_type="internal",
+                             logger=logger)
 
     def _get_nova_client(self):
         return self.nova_client
