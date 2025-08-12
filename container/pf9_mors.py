@@ -21,8 +21,9 @@ from eventlet import wsgi
 from paste.deploy import loadapp
 import argparse, logging
 import logging.handlers
-import os
+import sys
 from mors import mors_wsgi
+from mors.constants import ROOT_LOGGER
 
 from six.moves.configparser import ConfigParser
 
@@ -34,14 +35,43 @@ def _get_arg_parser():
     return parser.parse_args()
 
 def _configure_logging(conf):
-    log_filename = conf.get("DEFAULT", "log_file")
-    logging.basicConfig(filename=log_filename,
-                        level=logging.INFO,
-                        format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-                        datefmt='%m-%d %H:%M')
-    handler = logging.handlers.RotatingFileHandler(
-        log_filename, maxBytes=1024 * 1024 * 5, backupCount=5)
-    logging.root.addHandler(handler)
+    log_level = logging.INFO
+    log_file = conf.get("DEFAULT", "log_file")
+    log_format = logging.Formatter('mors %(asctime)s %(name)-12s %(levelname)s %(message)s')
+
+    # logging.basicConfig(filename=log_filename,
+    #                     level=logging.INFO,
+    #                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+    #                     datefmt='%m-%d %H:%M')
+    # handler = logging.handlers.RotatingFileHandler(
+    #     log_filename, maxBytes=1024 * 1024 * 5, backupCount=5)
+    # logging.root.addHandler(handler)
+
+    ### new code
+
+    logger = logging.getLogger(ROOT_LOGGER)
+    logger.setLevel(logging.INFO)
+    file_handler = logging.handlers.RotatingFileHandler(log_file,
+                                                   maxBytes=1024 * 1024 * 5,
+                                                   backupCount=5)
+    stderr_handler = logging.StreamHandler(stream=sys.stderr)
+
+    for handler in logger.handlers:                                                         
+        logger.removeHandler(handler)
+
+    our_handlers = [stderr_handler, file_handler]
+    for handler in our_handlers:
+        handler.setLevel(log_level)
+        handler.setFormatter(log_format)
+        logger.addHandler(handler)
+
+    ### new code end
+    
+    
+    ### testing
+    logger.info("checking if this works")
+    logger.warning("checking if this works")
+    ### testing end
 
 
 def start_server(conf, paste_ini):

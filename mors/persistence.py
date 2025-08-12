@@ -19,8 +19,9 @@ import logging
 from sqlalchemy import Table, MetaData
 from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
+from mors.constants import LOGGER_PREFIX
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(LOGGER_PREFIX+__name__)
 
 
 def db_connect(transaction=False):
