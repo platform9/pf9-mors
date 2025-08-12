@@ -70,6 +70,7 @@ class DbPersistence:
 
     @db_connect(transaction=False)
     def get_all_tenant_leases(self, conn):
+        logger.info("reached here -- this is how it lookz")
         return conn.execute(self.tenant_lease.select()).fetchall()
 
     @db_connect(transaction=False)
