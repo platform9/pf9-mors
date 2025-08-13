@@ -131,6 +131,12 @@ class LeaseManager:
 
     def add_instance_lease(self, context, tenant_uuid, instance_lease_obj):
         logger.info("Add instance lease %s", instance_lease_obj)
+        
+        # Check if expiry time is in the future
+        current_time = datetime.utcnow()
+        if 'expiry' not in instance_lease_obj or instance_lease_obj['expiry'] <= current_time:
+            raise ValueError("Expiry time must be in the future")
+            
         tenant_lease = self.domain_mgr.get_tenant_lease(tenant_uuid)
         if not self.check_instance_lease_violation(instance_lease_obj, tenant_lease):
             if 'action' in instance_lease_obj:                            
@@ -142,7 +148,7 @@ class LeaseManager:
                                            instance_lease_obj['expiry'],             
                                            action,                                   
                                            context.user_id,                          
-                                           datetime.utcnow())  
+                                           current_time)  
         else:
             raise ValueError("Instance lease exceeds tenant lease")
 
