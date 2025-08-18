@@ -1,0 +1,2 @@
+ROOT_LOGGER = "mors"
+LOGGER_PREFIX = ROOT_LOGGER + '.'

@@ -21,7 +21,9 @@ from keystoneauth1.identity import v3
 from keystoneauth1 import session
 from datetime import datetime
 from .constants import SUCCESS_OK, ERR_NOT_FOUND, ERR_UNKNOWN
-logger = logging.getLogger(__name__)
+from mors.constants import LOGGER_PREFIX
+
+logger = logging.getLogger(LOGGER_PREFIX+__name__)
 
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
@@ -43,7 +45,8 @@ class NovaLeaseHandler:
                              auth_url=self.conf.get("nova", "auth_url"),
                              insecure=True, connection_pool=False,
                              project_domain_name="default",
-                             user_domain_name="default", endpoint_type="internal")
+                             user_domain_name="default",
+                             endpoint_type="internal")
 
     def _get_nova_client(self):
         return self.nova_client

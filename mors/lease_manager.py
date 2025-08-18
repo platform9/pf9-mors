@@ -21,8 +21,9 @@ from .persistence import DbPersistence
 from eventlet.greenthread import spawn_after
 import logging
 from .leasehandler.constants import SUCCESS_OK, ERR_UNKNOWN, ERR_NOT_FOUND
+from mors.constants import LOGGER_PREFIX
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(LOGGER_PREFIX+__name__)
 DEFAULT_ACTION = 'power off'
 
 def get_tenant_lease_data(data):

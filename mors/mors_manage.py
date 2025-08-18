@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import argparse, logging
-from migrate.versioning.api import upgrade, create, version_control
+import argparse
+from migrate.versioning.api import upgrade, version_control
 from migrate.exceptions import DatabaseAlreadyControlledError
 
 from six.moves.configparser import ConfigParser
@@ -31,7 +31,7 @@ def _version_control(conf):
     try:
         version_control(conf.get("DEFAULT", "db_conn"), conf.get("DEFAULT", "repo"))
     except DatabaseAlreadyControlledError as e:
-        print(e)
+        print("mors_manage.py: %s" % e)
         # Ignore the already controlled error
 
 if __name__ == '__main__':
@@ -43,7 +43,7 @@ if __name__ == '__main__':
         upgrade(conf.get("DEFAULT", "db_conn"), conf.get("DEFAULT", "repo"))
         exit(0)
     else:
-        print('Unknown command')
+        print('mors_manage.py: Unknown command')
         exit(1)
 
 
