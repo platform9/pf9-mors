@@ -43,7 +43,7 @@ def _configure_logging(conf):
     log_file = conf.get("DEFAULT", "log_file")
     log_format = logging.Formatter('%(asctime)s %(name)-12s %(levelname)s %(message)s')
     logger = logging.getLogger(ROOT_LOGGER)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(log_level)
     file_handler = logging.handlers.RotatingFileHandler(log_file,
                                                    maxBytes=1024 * 1024 * 5,
                                                    backupCount=5)
