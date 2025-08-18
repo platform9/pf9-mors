@@ -35,7 +35,11 @@ def _get_arg_parser():
     return parser.parse_args()
 
 def _configure_logging(conf):
-    log_level = logging.INFO
+    log_level = conf.get(
+        "DEFAULT",
+        "log_level",
+        fallback=logging.INFO,
+    )
     log_file = conf.get("DEFAULT", "log_file")
     log_format = logging.Formatter('%(asctime)s %(name)-12s %(levelname)s %(message)s')
     logger = logging.getLogger(ROOT_LOGGER)
