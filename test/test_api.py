@@ -15,7 +15,7 @@ limitations under the License.
 """
 import os
 import sys;
-
+import time;
 import eventlet
 import requests
 from migrate.versioning.api import upgrade, version_control
@@ -197,7 +197,7 @@ def test_get_instance2():
 
 @test(depends_on=[test_get_instance2])
 def test_deleted_instance():
-    timeout = time.time() + 90  # 90 seconds max wait
+    timeout = time.time() + 90
     r = None
     while time.time() < timeout:
         r = requests.get(
