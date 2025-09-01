@@ -197,10 +197,17 @@ def test_get_instance2():
 
 @test(depends_on=[test_get_instance2])
 def test_deleted_instance():
-    eventlet.greenthread.sleep(50)
-    # The instance lease should be deleted by now
-    r = requests.get('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
-                     headers=headers)
+    timeout = time.time() + 90  # 90 seconds max wait
+    r = None
+    while time.time() < timeout:
+        r = requests.get(
+            'http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+            headers=headers
+        )
+        logger.debug(f"Polling for deletion: status={r.status_code}")
+        if r.status_code == 404:
+            break
+        eventlet.greenthread.sleep(5) 
     logger.debug(r.text)
     assert_equal(r.status_code, 404)
 
