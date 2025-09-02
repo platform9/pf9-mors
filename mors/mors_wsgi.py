@@ -23,6 +23,9 @@ DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 APP_NAME = "MORS"
 
 
+health_app = Flask("mors_health")
+
+
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
         try:
@@ -136,32 +139,45 @@ def shutdown_server():
         raise RuntimeError('Not running with the Werkzeug Server')
     func()
 
-@app.route("/health/live", methods=['GET'])
-def liveness_check():
-    """Liveness probe endpoint"""
-    return jsonify({"status": "alive", "service": APP_NAME}), 200
-
-@app.route("/health/ready", methods=['GET'])
-def readiness_check():
-    """Readiness probe endpoint"""
-    try:
-        if lease_manager is None:
-            return jsonify({"status": "not ready", "reason": "lease_manager not initialized"}), 503
-
-        lease_manager.domain_mgr.get_all_tenant_leases()
-
-        scheduler_healthy, scheduler_status = lease_manager.is_scheduler_healthy()
-        if not scheduler_healthy:
-            return jsonify({"status": "not ready", "reason": f"Scheduler unhealthy: {scheduler_status}"}), 503
-        
-        return jsonify({
-            "status": "ready", 
-            "service": APP_NAME,
-            "scheduler_status": scheduler_status,
-            "last_scheduler_run": lease_manager.last_run_time.isoformat() if lease_manager.last_run_time else None
-        }), 200
-    except Exception as e:
-        return jsonify({"status": "not ready", "reason": str(e)}), 503
 
 def app_factory(global_config, **local_conf):
     return app
+
+def health_app_factory(global_config, **local_conf):
+    """Factory for /health pipeline – only exposes health endpoints"""
+    from flask import Flask, jsonify
+
+    @health_app.route("/live", methods=["GET"])
+    def liveness_check():
+        return jsonify({"status": "alive", "service": APP_NAME}), 200
+
+    @health_app.route("/ready", methods=["GET"])
+    def readiness_check():
+        try:
+            if lease_manager is None:
+                return jsonify(
+                    {"status": "not ready", "reason": "lease_manager not initialized"}
+                ), 503
+
+            lease_manager.domain_mgr.get_all_tenant_leases()
+
+            scheduler_healthy, scheduler_status = lease_manager.is_scheduler_healthy()
+            if not scheduler_healthy:
+                return jsonify(
+                    {"status": "not ready", "reason": f"Scheduler unhealthy: {scheduler_status}"}
+                ), 503
+
+            return jsonify(
+                {
+                    "status": "ready",
+                    "service": APP_NAME,
+                    "scheduler_status": scheduler_status,
+                    "last_scheduler_run": lease_manager.last_run_time.isoformat()
+                    if lease_manager.last_run_time
+                    else None,
+                }
+            ), 200
+        except Exception as e:
+            return jsonify({"status": "not ready", "reason": str(e)}), 503
+
+    return health_app
