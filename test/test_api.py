@@ -15,7 +15,7 @@ limitations under the License.
 """
 import os
 import sys;
-
+import time;
 import eventlet
 import requests
 from migrate.versioning.api import upgrade, version_control
@@ -151,7 +151,7 @@ def test_create_tenant_neg():
 @test(depends_on=[test_create_tenant_neg])
 def test_create_instance():
     # Now test the instance manipulation
-    expiry = datetime.utcnow()
+    expiry = datetime.utcnow() + timedelta(minutes=1)
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
                       json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
@@ -169,7 +169,7 @@ def test_get_instance():
 
 @test(depends_on=[test_get_instance])
 def test_update_instance():
-    expiry = datetime.utcnow()
+    expiry = datetime.utcnow() + timedelta(minutes=1)
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
                       json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
@@ -197,10 +197,17 @@ def test_get_instance2():
 
 @test(depends_on=[test_get_instance2])
 def test_deleted_instance():
-    eventlet.greenthread.sleep(50)
-    # The instance lease should be deleted by now
-    r = requests.get('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
-                     headers=headers)
+    timeout = time.time() + 90
+    r = None
+    while time.time() < timeout:
+        r = requests.get(
+            'http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+            headers=headers
+        )
+        logger.debug(f"Polling for deletion: status={r.status_code}")
+        if r.status_code == 404:
+            break
+        eventlet.greenthread.sleep(5) 
     logger.debug(r.text)
     assert_equal(r.status_code, 404)
 
@@ -208,7 +215,7 @@ def test_deleted_instance():
 @test(depends_on=[test_deleted_instance])
 def test_create_instance2():
     # Now test the instance manipulation
-    expiry = datetime.utcnow()
+    expiry = datetime.utcnow() + timedelta(minutes=1)
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id2,
                       json={"instance_uuid": instance_id2, "expiry": expiry_str, "action": action2},
@@ -238,7 +245,7 @@ def test_create_tenant2():
 @test(depends_on=[test_create_tenant2])
 def test_create_instance3():
     # Now test the instance manipulation
-    expiry = datetime.utcnow()
+    expiry = datetime.utcnow() + timedelta(minutes=1)
     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2 + '/instance/' + instance_id3,
                       json={"tenant_uuid": tenant_id2, "instance_uuid": instance_id3, "expiry": expiry_str, "action": action2},

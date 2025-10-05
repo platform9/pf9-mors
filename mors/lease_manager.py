@@ -67,6 +67,8 @@ class LeaseManager:
         self.domain_mgr = DbPersistence(conf.get("DEFAULT", "db_conn"))
         self.lease_handler = get_lease_handler(conf)
         self.sleep_seconds = conf.getint("DEFAULT", "sleep_seconds")
+        self.last_run_time = None
+        self.scheduler_running = False
 
     def add_tenant_lease(self, context, tenant_obj):
         logger.info("Adding tenant lease %s", tenant_obj)
@@ -242,10 +244,67 @@ class LeaseManager:
             self.domain_mgr.delete_instance_leases(remove_from_db)
 
     def run(self):
-        # Delete the cleanup
-        tenant_leases = self.domain_mgr.get_all_tenant_leases()
-        for t_lease in tenant_leases:
-            self._delete_or_poweroff_vms_for_tenant(t_lease)
+        try:
+            self.scheduler_running = True
+            self.last_run_time = datetime.utcnow()
+            
+            # Delete the cleanup
+            tenant_leases = self.domain_mgr.get_all_tenant_leases()
+            for t_lease in tenant_leases:
+                self._delete_or_poweroff_vms_for_tenant(t_lease)
+            
+            logger.debug("Scheduler run completed at %s", self.last_run_time)
+        except Exception as e:
+            logger.error("Scheduler run failed: %s", str(e))
+            raise
+        finally:
+            self.scheduler_running = False
+            spawn_after(self.sleep_seconds, self.run)
 
-        # Sleep again for sleep_seconds
-        spawn_after(self.sleep_seconds, self.run)
+    def is_scheduler_healthy(self):
+        """
+        Check if the scheduler is healthy by verifying:
+        1. Last run time is within expected interval
+        2. Scheduler is not stuck in a running state for too long
+        """
+        if self.last_run_time is None:
+            return False, "Scheduler has never run"
+        
+        current_time = datetime.utcnow()
+        time_since_last_run = (current_time - self.last_run_time).total_seconds()
+
+        max_expected_interval = self.sleep_seconds * 2
+        
+        if time_since_last_run > max_expected_interval:
+            return False, f"Scheduler last ran {time_since_last_run:.0f}s ago, expected within {max_expected_interval}s"
+
+        estimated_max_runtime = self._estimate_max_scheduler_runtime()
+        
+        if self.scheduler_running and time_since_last_run > estimated_max_runtime:
+            return False, f"Scheduler appears stuck, running for {time_since_last_run:.0f}s (max expected: {estimated_max_runtime:.0f}s)"
+        
+        return True, "Scheduler is healthy"
+
+    def _estimate_max_scheduler_runtime(self):
+        """Race condition that migh happen if VMs are being deleted or powered off"""
+        try:
+            # total vms
+            total_vms = 0
+            tenant_leases = self.domain_mgr.get_all_tenant_leases()
+            
+            for t_lease in tenant_leases:
+                # Vm count
+                tenant_vms = self.lease_handler.get_all_vms(t_lease['tenant_uuid'])
+                total_vms += len(tenant_vms)
+            
+            # Estimate: 0.5s per VM operation + 10s base overhead + 50% safety buffer
+            estimated_time = (total_vms * 0.5) + 10
+            safety_buffer = estimated_time * 0.5
+            max_runtime = estimated_time + safety_buffer
+            
+            # Set bounds minimum 30s, maximum 300s (5 minutes)
+            return max(30, min(300, max_runtime))
+            
+        except Exception as e:
+            logger.warning("Could not estimate scheduler runtime: %s", str(e))
+            return 120
