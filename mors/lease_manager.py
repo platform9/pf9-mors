@@ -118,13 +118,6 @@ class LeaseManager:
                 [get_vm_lease_data(x) for x in self.domain_mgr.get_instance_leases_by_tenant(tenant_uuid)]
         }
 
-    def check_instance_lease_violation(self, instance_lease, tenant_lease):
-        violation = False
-        expiry = instance_lease['expiry']
-        if (datetime.utcnow() + timedelta(seconds=tenant_lease['expiry_mins']*60)) < expiry:
-            violation = True
-        return violation
-
     def get_instance_lease(self, context, instance_id):
         data = self.domain_mgr.get_instance_lease(instance_id)
         if data:
@@ -141,32 +134,27 @@ class LeaseManager:
             raise ValueError("Expiry time must be in the future")
             
         tenant_lease = self.domain_mgr.get_tenant_lease(tenant_uuid)
-        if not self.check_instance_lease_violation(instance_lease_obj, tenant_lease):
-            if 'action' in instance_lease_obj:                            
-                action = instance_lease_obj['action']                           
-            else:                                                               
-                action = DEFAULT_ACTION      
-            self.domain_mgr.add_instance_lease(instance_lease_obj['instance_uuid'],  
+        if 'action' in instance_lease_obj:                            
+            action = instance_lease_obj['action']                           
+        else:                                                               
+            action = DEFAULT_ACTION      
+        self.domain_mgr.add_instance_lease(instance_lease_obj['instance_uuid'],  
                                            tenant_uuid,                              
                                            instance_lease_obj['expiry'],             
                                            action,                                   
                                            context.user_id,                          
                                            current_time)  
-        else:
-            raise ValueError("Instance lease exceeds tenant lease")
 
     def update_instance_lease(self, context, tenant_uuid, instance_lease_obj):
         logger.info("Update instance lease %s", instance_lease_obj)
         tenant_lease = self.domain_mgr.get_tenant_lease(tenant_uuid)
-        if not self.check_instance_lease_violation(instance_lease_obj, tenant_lease):
-            self.domain_mgr.update_instance_lease(instance_lease_obj['instance_uuid'],
-                                              tenant_uuid,
-                                              instance_lease_obj['expiry'],
-                                              instance_lease_obj['action'],
-                                              context.user_id,
-                                              datetime.utcnow())
-        else:
-            raise ValueError("Instance lease exceeds tenant lease")
+        self.domain_mgr.update_instance_lease(instance_lease_obj['instance_uuid'],
+                                            tenant_uuid,
+                                            instance_lease_obj['expiry'],
+                                            instance_lease_obj['action'],
+                                            context.user_id,
+                                            datetime.utcnow())
+        
 
     def delete_instance_lease(self, context, instance_uuid):
         logger.info("Delete instance lease %s", instance_uuid)
@@ -186,7 +174,9 @@ class LeaseManager:
         now = datetime.utcnow()
         add_seconds = timedelta(seconds=expiry_mins*60)
         instance_leases = self.get_tenant_and_associated_instance_leases(None, tenant_uuid)['all_vms']
+        vm_lease_ids = []
         for i_lease in instance_leases:
+            vm_lease_ids.append(i_lease['instance_uuid'])
             if now > i_lease['expiry']:
                 if i_lease['action'] == 'delete':
                      logger.info("Explicit lease for %s queueing for deletion", i_lease['instance_uuid'])
@@ -201,11 +191,14 @@ class LeaseManager:
                 logger.debug("Ignoring vm, vm not expired yet %s", i_lease['instance_uuid'])
 
         tenant_vms = self.lease_handler.get_all_vms(tenant_uuid)
+        # Fetch all instance UUIDs that have explicit VM leases and skip them for tenant-level enforcement
         for vm in tenant_vms:
+            #If VM has an explicit VM lease, skip applying tenant default policy to it
+            if vm['instance_uuid'] in vm_lease_ids:
+                logger.debug("Skipping VM %s due to explicit VM lease", vm['instance_uuid'])
+                continue
             expiry_date = vm['created_at'] + add_seconds
-            if now > expiry_date and vm['instance_uuid'] not in vm_ids_to_delete \
-                                 and vm['instance_uuid'] not in vms_to_poweroff \
-                                 and vm['instance_uuid'] not in do_not_delete:
+            if now > expiry_date:
                 if action == 'delete':
                      logger.info("Instance %s queued up for deletion, creation date %s", vm['instance_uuid'],
                             vm['created_at'])
