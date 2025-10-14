@@ -133,7 +133,6 @@ class LeaseManager:
         if 'expiry' not in instance_lease_obj or instance_lease_obj['expiry'] <= current_time:
             raise ValueError("Expiry time must be in the future")
             
-        tenant_lease = self.domain_mgr.get_tenant_lease(tenant_uuid)
         if 'action' in instance_lease_obj:                            
             action = instance_lease_obj['action']                           
         else:                                                               
@@ -147,7 +146,6 @@ class LeaseManager:
 
     def update_instance_lease(self, context, tenant_uuid, instance_lease_obj):
         logger.info("Update instance lease %s", instance_lease_obj)
-        tenant_lease = self.domain_mgr.get_tenant_lease(tenant_uuid)
         self.domain_mgr.update_instance_lease(instance_lease_obj['instance_uuid'],
                                             tenant_uuid,
                                             instance_lease_obj['expiry'],
@@ -168,24 +166,20 @@ class LeaseManager:
     def _get_vms_to_delete_or_poweroff_for_tenant(self, tenant_uuid, expiry_mins, action):
         vms_to_delete = []
         vms_to_poweroff = []
-        vm_ids_to_delete = set()
-        vm_ids_to_poweroff = set()
         do_not_delete = set()
         now = datetime.utcnow()
         add_seconds = timedelta(seconds=expiry_mins*60)
         instance_leases = self.get_tenant_and_associated_instance_leases(None, tenant_uuid)['all_vms']
-        vm_lease_ids = []
+        vm_lease_ids = set()
         for i_lease in instance_leases:
-            vm_lease_ids.append(i_lease['instance_uuid'])
+            vm_lease_ids.add(i_lease['instance_uuid'])
             if now > i_lease['expiry']:
                 if i_lease['action'] == 'delete':
                      logger.info("Explicit lease for %s queueing for deletion", i_lease['instance_uuid'])
                      vms_to_delete.append(i_lease)
-                     vm_ids_to_delete.add(i_lease['instance_uuid'])
                 else:
                      logger.info("Explicit lease for %s queueing up to Power off", i_lease['instance_uuid'])
                      vms_to_poweroff.append(i_lease)
-                     vm_ids_to_poweroff.add(i_lease['instance_uuid'])
             else:
                 do_not_delete.add(i_lease['instance_uuid'])
                 logger.debug("Ignoring vm, vm not expired yet %s", i_lease['instance_uuid'])
