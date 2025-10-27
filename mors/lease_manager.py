@@ -164,8 +164,9 @@ class LeaseManager:
     # Could have used a generator here, would save memory but wonder if it is a good idea given the error conditions
     # This is a simple implementation which goes and deletes VMs one by one
     def _get_vms_to_delete_or_poweroff_for_tenant(self, tenant_uuid, expiry_mins, action):
-        vms_to_delete = []
-        vms_to_poweroff = []
+        vms_to_delete = [] # all vms with either tenant or explicit delete lease
+        vms_to_poweroff = [] # only vms with explicit power off lease
+        tenant_vms_to_poweroff = [] # only vms with tenant power off lease
         do_not_delete = set()
         now = datetime.utcnow()
         add_seconds = timedelta(seconds=expiry_mins*60)
@@ -200,35 +201,48 @@ class LeaseManager:
                 else:
                      logger.info("Instance %s queued up to Power off, creation date %s", vm['instance_uuid'],
                             vm['created_at'])
-                     vms_to_poweroff.append(vm)
+                     tenant_vms_to_poweroff.append(vm)
             else:
                 logger.debug("Ignoring vm, vm not expired yet or already powered off or deleted %s, %s", vm['instance_uuid'],
                              vm['created_at'])
 
-        return (vms_to_delete, vms_to_poweroff)
+        return (vms_to_delete, vms_to_poweroff, tenant_vms_to_poweroff)
 
     def _delete_or_poweroff_vms_for_tenant(self, t_lease):
-        tenant_vms_to_delete, tenant_vms_to_poweroff = self._get_vms_to_delete_or_poweroff_for_tenant(t_lease['tenant_uuid'], t_lease['expiry_mins'], t_lease['action'])
+        tenant_vms_to_delete, vms_to_poweroff, tenant_vms_to_poweroff = self._get_vms_to_delete_or_poweroff_for_tenant(t_lease['tenant_uuid'], t_lease['expiry_mins'], t_lease['action'])
 
-        remove_from_db = []
+        remove_tenant_vms_from_db = []
+        vms_processed = [] # collect instance UUIDs that were successfully powered off
         # Keep it simple and delete them serially
         if tenant_vms_to_delete:
             result = self.lease_handler.delete_vms(tenant_vms_to_delete)
             for vm_result in result.items():  
                 # If either the VM has been successfully deleted or has already been deleted
                 if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
-                    remove_from_db.append(vm_result[0])
+                    remove_tenant_vms_from_db.append(vm_result[0])
  
         if tenant_vms_to_poweroff:
             result = self.lease_handler.poweroff_vms(tenant_vms_to_poweroff)
             for vm_result in result.items():
                 # If either the VM has been successfully powered off or has already been powered off
                 if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
-                    remove_from_db.append(vm_result[0])        
+                    remove_tenant_vms_from_db.append(vm_result[0])  
 
-        if len(remove_from_db) > 0:
-            logger.info("Removing vms %s from db", remove_from_db)
-            self.domain_mgr.delete_instance_leases(remove_from_db)
+        if vms_to_poweroff:
+            result = self.lease_handler.poweroff_vms(vms_to_poweroff)
+            for vm_result in result.items():
+                # If either the VM has been successfully powered off or has already been powered off
+                if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
+                        vms_processed.append(vm_result[0])
+
+        if len(remove_tenant_vms_from_db) > 0:
+            logger.info("Removing vms %s from db", remove_tenant_vms_from_db)
+            self.domain_mgr.delete_instance_leases(remove_tenant_vms_from_db)
+
+        # instead of deleting vms with lease policy poweroff from db, mark them as processed
+        if vms_processed:
+            logger.info("Marking vms %s as processed instead of deleting from db", vms_processed)
+            self.domain_mgr.mark_instance_leases_processed(vms_processed, datetime.utcnow())
 
     def run(self):
         try:

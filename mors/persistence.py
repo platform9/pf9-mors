@@ -127,3 +127,26 @@ class DbPersistence:
         # Delete 10 at a time, should we soft delete
         logger.debug("Deleting instance leases %s", str(instance_uuids))
         conn.execute(self.instance_lease.delete().where(self.instance_lease.c.instance_uuid.in_(instance_uuids)))
+
+    @db_connect(transaction=True)
+    def mark_instance_lease_processed(self, conn, instance_uuids, processed_at):
+        """
+        Marks a given instance lease as processed.
+        Typically used after a lease-related action (like cleanup or expiry)
+        has been successfully completed.
+
+        :param instance_uuid: UUID of the instance whose lease was processed
+        :param processed_at: Datetime when the lease was processed
+        """
+        logger.debug("Marking instance lease %s as processed at %s",
+                     instance_uuids, processed_at)
+
+        conn.execute(
+            self.instance_lease.update()
+            .where(self.instance_lease.c.instance_uuid.in_(instance_uuids))
+            .values(
+                processed=True,
+                processed_at=processed_at
+            )
+        )
+
