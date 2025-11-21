@@ -210,25 +210,27 @@ class LeaseManager:
     def _delete_or_poweroff_vms_for_tenant(self, t_lease):
         tenant_vms_to_delete, tenant_vms_to_poweroff = self._get_vms_to_delete_or_poweroff_for_tenant(t_lease['tenant_uuid'], t_lease['expiry_mins'], t_lease['action'])
 
-        remove_from_db = []
-        # Keep it simple and delete them serially
+        # Only collect VMs to be deleted for removal from DB
+        vms_to_remove_from_db = []
+        
+        # Process VMs marked for deletion
         if tenant_vms_to_delete:
             result = self.lease_handler.delete_vms(tenant_vms_to_delete)
             for vm_result in result.items():  
                 # If either the VM has been successfully deleted or has already been deleted
                 if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
-                    remove_from_db.append(vm_result[0])
+                    vms_to_remove_from_db.append(vm_result[0])
  
+        # Process VMs marked for power off
         if tenant_vms_to_poweroff:
-            result = self.lease_handler.poweroff_vms(tenant_vms_to_poweroff)
-            for vm_result in result.items():
-                # If either the VM has been successfully powered off or has already been powered off
-                if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
-                    remove_from_db.append(vm_result[0])        
-
-        if len(remove_from_db) > 0:
-            logger.info("Removing vms %s from db", remove_from_db)
-            self.domain_mgr.delete_instance_leases(remove_from_db)
+            self.lease_handler.poweroff_vms(tenant_vms_to_poweroff)
+            # Note: We don't remove power-off VMs from the database
+            # so they can be tracked and managed properly
+        
+        # Only remove VMs that were deleted from the database
+        if vms_to_remove_from_db:
+            logger.info("Removing deleted VMs from db: %s", vms_to_remove_from_db)
+            self.domain_mgr.delete_instance_leases(vms_to_remove_from_db)
 
     def run(self):
         try:
