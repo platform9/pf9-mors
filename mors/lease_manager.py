@@ -223,9 +223,14 @@ class LeaseManager:
  
         # Process VMs marked for power off
         if tenant_vms_to_poweroff:
-            self.lease_handler.poweroff_vms(tenant_vms_to_poweroff)
-            # Note: We don't remove power-off VMs from the database
-            # so they can be tracked and managed properly
+            result = self.lease_handler.poweroff_vms(tenant_vms_to_poweroff)
+            for vm_result in result.items():
+                # Note: We don't remove power-off VMs from the database
+                # so they can be tracked and managed properly 
+                # only remove leases for VMs that were deleted 
+                if vm_result[1] == ERR_NOT_FOUND:
+                    vms_to_remove_from_db.append(vm_result[0])
+            
         
         # Only remove VMs that were deleted from the database
         if vms_to_remove_from_db:
