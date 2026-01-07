@@ -1,0 +1,1700 @@
+E401 [*] Multiple imports on one line
+  --> container/mors_manage.py:18:1
+   |
+16 | """
+17 |
+18 | import argparse, logging
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+19 | from migrate.versioning.api import upgrade, create, version_control
+20 | from migrate.exceptions import DatabaseAlreadyControlledError
+   |
+help: Split imports
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> container/mors_manage.py:18:1
+   |
+16 |   """
+17 |
+18 | / import argparse, logging
+19 | | from migrate.versioning.api import upgrade, create, version_control
+20 | | from migrate.exceptions import DatabaseAlreadyControlledError
+21 | |
+22 | | from six.moves.configparser import ConfigParser
+   | |_______________________________________________^
+23 |
+24 |   def _get_arg_parser():
+   |
+help: Organize imports
+
+F401 [*] `logging` imported but unused
+  --> container/mors_manage.py:18:18
+   |
+16 | """
+17 |
+18 | import argparse, logging
+   |                  ^^^^^^^
+19 | from migrate.versioning.api import upgrade, create, version_control
+20 | from migrate.exceptions import DatabaseAlreadyControlledError
+   |
+help: Remove unused import: `logging`
+
+F401 [*] `migrate.versioning.api.create` imported but unused
+  --> container/mors_manage.py:19:45
+   |
+18 | import argparse, logging
+19 | from migrate.versioning.api import upgrade, create, version_control
+   |                                             ^^^^^^
+20 | from migrate.exceptions import DatabaseAlreadyControlledError
+   |
+help: Remove unused import: `migrate.versioning.api.create`
+
+E501 Line too long (93 > 88)
+  --> container/mors_manage.py:26:89
+   |
+24 | def _get_arg_parser():
+25 |     parser = argparse.ArgumentParser(description="Lease Manager for VirtualMachines")
+26 |     parser.add_argument('--config-file', dest='config_file', default='/etc/pf9/pf9-mors.ini')
+   |                                                                                         ^^^^^
+27 |     parser.add_argument('--command', dest='command', default='db_sync')
+28 |     return parser.parse_args()
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> container/pf9_mors.py:18:1
+   |
+16 | """
+17 |
+18 | import eventlet
+   | ^^^^^^^^^^^^^^^
+19 | eventlet.monkey_patch()
+20 | from eventlet import wsgi
+   |
+help: Organize imports
+
+E402 Module level import not at top of file
+  --> container/pf9_mors.py:20:1
+   |
+18 | import eventlet
+19 | eventlet.monkey_patch()
+20 | from eventlet import wsgi
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+21 | from paste.deploy import loadapp
+22 | import argparse, logging
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> container/pf9_mors.py:20:1
+   |
+18 |   import eventlet
+19 |   eventlet.monkey_patch()
+20 | / from eventlet import wsgi
+21 | | from paste.deploy import loadapp
+22 | | import argparse, logging
+23 | | import logging.handlers
+24 | | import sys
+25 | | from mors import mors_wsgi
+26 | | from mors.constants import ROOT_LOGGER
+27 | |
+28 | | from six.moves.configparser import ConfigParser
+   | |_______________________________________________^
+   |
+help: Organize imports
+
+E402 Module level import not at top of file
+  --> container/pf9_mors.py:21:1
+   |
+19 | eventlet.monkey_patch()
+20 | from eventlet import wsgi
+21 | from paste.deploy import loadapp
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+22 | import argparse, logging
+23 | import logging.handlers
+   |
+
+E401 [*] Multiple imports on one line
+  --> container/pf9_mors.py:22:1
+   |
+20 | from eventlet import wsgi
+21 | from paste.deploy import loadapp
+22 | import argparse, logging
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+23 | import logging.handlers
+24 | import sys
+   |
+help: Split imports
+
+E402 Module level import not at top of file
+  --> container/pf9_mors.py:22:1
+   |
+20 | from eventlet import wsgi
+21 | from paste.deploy import loadapp
+22 | import argparse, logging
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+23 | import logging.handlers
+24 | import sys
+   |
+
+E402 Module level import not at top of file
+  --> container/pf9_mors.py:23:1
+   |
+21 | from paste.deploy import loadapp
+22 | import argparse, logging
+23 | import logging.handlers
+   | ^^^^^^^^^^^^^^^^^^^^^^^
+24 | import sys
+25 | from mors import mors_wsgi
+   |
+
+E402 Module level import not at top of file
+  --> container/pf9_mors.py:24:1
+   |
+22 | import argparse, logging
+23 | import logging.handlers
+24 | import sys
+   | ^^^^^^^^^^
+25 | from mors import mors_wsgi
+26 | from mors.constants import ROOT_LOGGER
+   |
+
+E402 Module level import not at top of file
+  --> container/pf9_mors.py:25:1
+   |
+23 | import logging.handlers
+24 | import sys
+25 | from mors import mors_wsgi
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+26 | from mors.constants import ROOT_LOGGER
+   |
+
+E402 Module level import not at top of file
+  --> container/pf9_mors.py:26:1
+   |
+24 | import sys
+25 | from mors import mors_wsgi
+26 | from mors.constants import ROOT_LOGGER
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+27 |
+28 | from six.moves.configparser import ConfigParser
+   |
+
+E402 Module level import not at top of file
+  --> container/pf9_mors.py:28:1
+   |
+26 | from mors.constants import ROOT_LOGGER
+27 |
+28 | from six.moves.configparser import ConfigParser
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+
+E501 Line too long (93 > 88)
+  --> container/pf9_mors.py:33:89
+   |
+31 | def _get_arg_parser():
+32 |     parser = argparse.ArgumentParser(description="Lease Manager for VirtualMachines")
+33 |     parser.add_argument('--config-file', dest='config_file', default='/etc/pf9/pf9-mors.ini')
+   |                                                                                         ^^^^^
+34 |     parser.add_argument('--paste-ini', dest='paste_file')
+35 |     return parser.parse_args()
+   |
+
+E501 Line too long (92 > 88)
+  --> container/pf9_mors.py:52:89
+   |
+50 |     stderr_handler = logging.StreamHandler(stream=sys.stderr)
+51 |
+52 |     for handler in logger.handlers:                                                         
+   |                                                                                         ^^^^
+53 |         logger.removeHandler(handler)
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> container/y2j.py:1:1
+  |
+1 | / import yaml
+2 | | import json
+3 | | import sys
+  | |__________^
+4 |
+5 |   fname = sys.argv[1]
+  |
+help: Organize imports
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/context_util.py:17:1
+   |
+15 |   """
+16 |
+17 | / from flask import request, jsonify
+18 | | import functools, os
+   | |____________________^
+   |
+help: Organize imports
+
+E401 [*] Multiple imports on one line
+  --> mors/context_util.py:18:1
+   |
+17 | from flask import request, jsonify
+18 | import functools, os
+   | ^^^^^^^^^^^^^^^^^^^^
+   |
+help: Split imports
+
+F401 [*] `os` imported but unused
+  --> mors/context_util.py:18:19
+   |
+17 | from flask import request, jsonify
+18 | import functools, os
+   |                   ^^
+   |
+help: Remove unused import: `os`
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/context_util.py:29:5
+   |
+28 |   def error_handler(func):
+29 | /     from sqlalchemy.exc import IntegrityError
+30 | |     import traceback,sys
+   | |________________________^
+31 |       @functools.wraps(func)
+32 |       def inner(*args, **kwargs):
+   |
+help: Organize imports
+
+E401 [*] Multiple imports on one line
+  --> mors/context_util.py:30:5
+   |
+28 | def error_handler(func):
+29 |     from sqlalchemy.exc import IntegrityError
+30 |     import traceback,sys
+   |     ^^^^^^^^^^^^^^^^^^^^
+31 |     @functools.wraps(func)
+32 |     def inner(*args, **kwargs):
+   |
+help: Split imports
+
+E501 Line too long (102 > 88)
+  --> mors/context_util.py:37:89
+   |
+35 |         except ValueError as exc:
+36 |             traceback.print_exc(file=sys.stdout)
+37 |             return jsonify({'error': '{}'.format(str(exc))}), 422, {'ContentType': 'application/json'}
+   |                                                                                         ^^^^^^^^^^^^^^
+38 |
+39 |         except IntegrityError as exc:
+   |
+
+F841 [*] Local variable `exc` is assigned to but never used
+  --> mors/context_util.py:39:34
+   |
+37 |             return jsonify({'error': '{}'.format(str(exc))}), 422, {'ContentType': 'application/json'}
+38 |
+39 |         except IntegrityError as exc:
+   |                                  ^^^
+40 |             traceback.print_exc(file=sys.stdout)
+41 |             return jsonify({'error': 'Already exists'}), 409, {'ContentType': 'application/json'}
+   |
+help: Remove assignment to unused variable `exc`
+
+E501 Line too long (97 > 88)
+  --> mors/context_util.py:41:89
+   |
+39 |         except IntegrityError as exc:
+40 |             traceback.print_exc(file=sys.stdout)
+41 |             return jsonify({'error': 'Already exists'}), 409, {'ContentType': 'application/json'}
+   |                                                                                         ^^^^^^^^^
+42 |
+43 |     return inner
+   |
+
+E501 Line too long (103 > 88)
+  --> mors/context_util.py:70:89
+   |
+68 |                     return fun( *args, **kwargs)
+69 |                 else:
+70 |                     return jsonify({'error': 'Unauthorized'}), 403, {'ContentType': 'application/json'}
+   |                                                                                         ^^^^^^^^^^^^^^^
+71 |
+72 |         return newfun
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/lease_manager.py:17:1
+   |
+15 |   """
+16 |
+17 | / from datetime import datetime, timedelta
+18 | |
+19 | | from .leasehandler import get_lease_handler
+20 | | from .persistence import DbPersistence
+21 | | from eventlet.greenthread import spawn_after
+22 | | import logging
+23 | | from .leasehandler.constants import SUCCESS_OK, ERR_UNKNOWN, ERR_NOT_FOUND
+24 | | from mors.constants import LOGGER_PREFIX
+   | |________________________________________^
+25 |
+26 |   logger = logging.getLogger(LOGGER_PREFIX+__name__)
+   |
+help: Organize imports
+
+F401 [*] `.leasehandler.constants.ERR_UNKNOWN` imported but unused
+  --> mors/lease_manager.py:23:49
+   |
+21 | from eventlet.greenthread import spawn_after
+22 | import logging
+23 | from .leasehandler.constants import SUCCESS_OK, ERR_UNKNOWN, ERR_NOT_FOUND
+   |                                                 ^^^^^^^^^^^
+24 | from mors.constants import LOGGER_PREFIX
+   |
+help: Remove unused import: `.leasehandler.constants.ERR_UNKNOWN`
+
+E501 Line too long (90 > 88)
+  --> mors/lease_manager.py:62:89
+   |
+60 | class LeaseManager:
+61 |     """
+62 |     Lease Manager is the main class for mors dealing with CRUD operations for the REST API
+   |                                                                                         ^^
+63 |     as well as the actual deletion of the Instances. Instance deletion and discovery is achieved
+64 |     through an object 'leasehandler'.
+   |
+
+E501 Line too long (96 > 88)
+  --> mors/lease_manager.py:63:89
+   |
+61 |     """
+62 |     Lease Manager is the main class for mors dealing with CRUD operations for the REST API
+63 |     as well as the actual deletion of the Instances. Instance deletion and discovery is achieved
+   |                                                                                         ^^^^^^^^
+64 |     through an object 'leasehandler'.
+65 |     """
+   |
+
+E501 Line too long (106 > 88)
+   --> mors/lease_manager.py:118:89
+    |
+116 |             'tenant_lease': self.get_tenant_lease(context, tenant_uuid),
+117 |             'all_vms':
+118 |                 [get_vm_lease_data(x) for x in self.domain_mgr.get_instance_leases_by_tenant(tenant_uuid)]
+    |                                                                                         ^^^^^^^^^^^^^^^^^^
+119 |         }
+    |
+
+E501 Line too long (94 > 88)
+   --> mors/lease_manager.py:133:89
+    |
+131 |         # Check if expiry time is in the future
+132 |         current_time = datetime.utcnow()
+133 |         if 'expiry' not in instance_lease_obj or instance_lease_obj['expiry'] <= current_time:
+    |                                                                                         ^^^^^^
+134 |             raise ValueError("Expiry time must be in the future")
+    |
+
+E501 Line too long (116 > 88)
+   --> mors/lease_manager.py:164:89
+    |
+162 |         spawn_after(self.sleep_seconds, self.run)
+163 |
+164 |     # Could have used a generator here, would save memory but wonder if it is a good idea given the error conditions
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+165 |     # This is a simple implementation which goes and deletes VMs one by one
+166 |     def _get_vms_to_delete_or_poweroff_for_tenant(self, tenant_uuid, expiry_mins, action):
+    |
+
+E501 Line too long (90 > 88)
+   --> mors/lease_manager.py:166:89
+    |
+164 |     # Could have used a generator here, would save memory but wonder if it is a good idea given the error conditions
+165 |     # This is a simple implementation which goes and deletes VMs one by one
+166 |     def _get_vms_to_delete_or_poweroff_for_tenant(self, tenant_uuid, expiry_mins, action):
+    |                                                                                         ^^
+167 |         vms_to_delete = []
+168 |         vms_to_poweroff = []
+    |
+
+E501 Line too long (102 > 88)
+   --> mors/lease_manager.py:172:89
+    |
+170 |         now = datetime.utcnow()
+171 |         add_seconds = timedelta(seconds=expiry_mins*60)
+172 |         instance_leases = self.get_tenant_and_associated_instance_leases(None, tenant_uuid)['all_vms']
+    |                                                                                         ^^^^^^^^^^^^^^
+173 |         vm_lease_ids = set()
+174 |         for i_lease in instance_leases:
+    |
+
+E501 Line too long (105 > 88)
+   --> mors/lease_manager.py:178:89
+    |
+176 |             if now > i_lease['expiry']:
+177 |                 if i_lease['action'] == 'delete':
+178 |                      logger.info("Explicit lease for %s queueing for deletion", i_lease['instance_uuid'])
+    |                                                                                         ^^^^^^^^^^^^^^^^^
+179 |                      vms_to_delete.append(i_lease)
+180 |                 else:
+    |
+
+E501 Line too long (108 > 88)
+   --> mors/lease_manager.py:181:89
+    |
+179 |                      vms_to_delete.append(i_lease)
+180 |                 else:
+181 |                      logger.info("Explicit lease for %s queueing up to Power off", i_lease['instance_uuid'])
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^
+182 |                      vms_to_poweroff.append(i_lease)
+183 |             else:
+    |
+
+E501 Line too long (92 > 88)
+   --> mors/lease_manager.py:185:89
+    |
+183 |             else:
+184 |                 do_not_delete.add(i_lease['instance_uuid'])
+185 |                 logger.debug("Ignoring vm, vm not expired yet %s", i_lease['instance_uuid'])
+    |                                                                                         ^^^^
+186 |
+187 |         tenant_vms = self.lease_handler.get_all_vms(tenant_uuid)
+    |
+
+E501 Line too long (106 > 88)
+   --> mors/lease_manager.py:188:89
+    |
+187 |         tenant_vms = self.lease_handler.get_all_vms(tenant_uuid)
+188 |         # Fetch all instance UUIDs that have explicit VM leases and skip them for tenant-level enforcement
+    |                                                                                         ^^^^^^^^^^^^^^^^^^
+189 |         for vm in tenant_vms:
+190 |             #If VM has an explicit VM lease, skip applying tenant default policy to it
+    |
+
+E501 Line too long (92 > 88)
+   --> mors/lease_manager.py:192:89
+    |
+190 |             #If VM has an explicit VM lease, skip applying tenant default policy to it
+191 |             if vm['instance_uuid'] in vm_lease_ids:
+192 |                 logger.debug("Skipping VM %s due to explicit VM lease", vm['instance_uuid'])
+    |                                                                                         ^^^^
+193 |                 continue
+194 |             expiry_date = vm['created_at'] + add_seconds
+    |
+
+E501 Line too long (109 > 88)
+   --> mors/lease_manager.py:197:89
+    |
+195 |             if now > expiry_date:
+196 |                 if action == 'delete':
+197 |                      logger.info("Instance %s queued up for deletion, creation date %s", vm['instance_uuid'],
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^
+198 |                             vm['created_at'])
+199 |                      vms_to_delete.append(vm)
+    |
+
+E501 Line too long (109 > 88)
+   --> mors/lease_manager.py:201:89
+    |
+199 |                      vms_to_delete.append(vm)
+200 |                 else:
+201 |                      logger.info("Instance %s queued up to Power off, creation date %s", vm['instance_uuid'],
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^
+202 |                             vm['created_at'])
+203 |                      vms_to_poweroff.append(vm)
+    |
+
+E501 Line too long (125 > 88)
+   --> mors/lease_manager.py:205:89
+    |
+203 |                      vms_to_poweroff.append(vm)
+204 |             else:
+205 |                 logger.debug("Ignoring vm, vm not expired yet or already powered off or deleted %s, %s", vm['instance_uuid'],
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+206 |                              vm['created_at'])
+    |
+
+E501 Line too long (168 > 88)
+   --> mors/lease_manager.py:211:89
+    |
+210 | …
+211 | …et_vms_to_delete_or_poweroff_for_tenant(t_lease['tenant_uuid'], t_lease['expiry_mins'], t_lease['action'])
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+212 | …
+213 | …
+    |
+
+E501 Line too long (92 > 88)
+   --> mors/lease_manager.py:220:89
+    |
+218 |             result = self.lease_handler.delete_vms(tenant_vms_to_delete)
+219 |             for vm_result in result.items():  
+220 |                 # If either the VM has been successfully deleted or has already been deleted
+    |                                                                                         ^^^^
+221 |                 if vm_result[1] == SUCCESS_OK or vm_result[1] == ERR_NOT_FOUND:
+222 |                     vms_to_remove_from_db.append(vm_result[0])
+    |
+
+E501 Line too long (120 > 88)
+   --> mors/lease_manager.py:273:89
+    |
+272 |         if time_since_last_run > max_expected_interval:
+273 |             return False, f"Scheduler last ran {time_since_last_run:.0f}s ago, expected within {max_expected_interval}s"
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+274 |
+275 |         estimated_max_runtime = self._estimate_max_scheduler_runtime()
+    |
+
+E501 Line too long (137 > 88)
+   --> mors/lease_manager.py:278:89
+    |
+277 | …e_last_run > estimated_max_runtime:
+278 | …tuck, running for {time_since_last_run:.0f}s (max expected: {estimated_max_runtime:.0f}s)"
+    |                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+279 | …
+280 | …
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/leasehandler/__init__.py:16:1
+   |
+14 |   limitations under the License.
+15 |   """
+16 | / from .nova_lease_handler import NovaLeaseHandler
+17 | | from .fake_lease_handler import FakeLeaseHandler
+   | |________________________________________________^
+   |
+help: Organize imports
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/leasehandler/fake_lease_handler.py:16:1
+   |
+14 |   limitations under the License.
+15 |   """
+16 | / from . import constants
+17 | | import logging
+18 | | from datetime import datetime
+   | |_____________________________^
+19 |
+20 |   # @TODO: Need to move this to a test folder
+   |
+help: Organize imports
+
+F401 [*] `datetime.datetime` imported but unused
+  --> mors/leasehandler/fake_lease_handler.py:18:22
+   |
+16 | from . import constants
+17 | import logging
+18 | from datetime import datetime
+   |                      ^^^^^^^^
+19 |
+20 | # @TODO: Need to move this to a test folder
+   |
+help: Remove unused import: `datetime.datetime`
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/leasehandler/nova_lease_handler.py:17:1
+   |
+15 |   """
+16 |
+17 | / from novaclient import client
+18 | | import logging
+19 | | import novaclient
+20 | | from keystoneauth1.identity import v3
+21 | | from keystoneauth1 import session
+22 | | from datetime import datetime
+23 | | from .constants import SUCCESS_OK, ERR_NOT_FOUND, ERR_UNKNOWN
+24 | | from mors.constants import LOGGER_PREFIX
+   | |________________________________________^
+25 |
+26 |   logger = logging.getLogger(LOGGER_PREFIX+__name__)
+   |
+help: Organize imports
+
+E501 Line too long (99 > 88)
+  --> mors/leasehandler/nova_lease_handler.py:70:89
+   |
+68 |         Get all vms for a given tenant
+69 |         :param tenant_uuid:
+70 |         :return: an iteratble that returns a set of vms (each vm has a UUID and a created_at field)
+   |                                                                                         ^^^^^^^^^^^
+71 |         """
+72 |         try:
+   |
+
+E501 Line too long (95 > 88)
+  --> mors/leasehandler/nova_lease_handler.py:74:89
+   |
+72 |         try:
+73 |             with self._get_nova_client() as nova:
+74 |                 vms = nova.servers.list(search_opts={'all_tenants':1, 'tenant_id':tenant_uuid})
+   |                                                                                         ^^^^^^^
+75 |                 return [get_vm_data(x) for x in vms]
+76 |         except Exception as e:
+   |
+
+F841 [*] Local variable `e` is assigned to but never used
+  --> mors/leasehandler/nova_lease_handler.py:76:29
+   |
+74 |                 vms = nova.servers.list(search_opts={'all_tenants':1, 'tenant_id':tenant_uuid})
+75 |                 return [get_vm_data(x) for x in vms]
+76 |         except Exception as e:
+   |                             ^
+77 |             logger.exception("Error getting list of vms for tenant %s", tenant_uuid)
+   |
+help: Remove assignment to unused variable `e`
+
+F841 [*] Local variable `e` is assigned to but never used
+   --> mors/leasehandler/nova_lease_handler.py:103:29
+    |
+101 |         except novaclient.exceptions.NotFound:
+102 |             return ERR_NOT_FOUND
+103 |         except Exception as e:
+    |                             ^
+104 |             logger.exception("Error deleting vm %s", vm_uuid)
+105 |             return ERR_UNKNOWN
+    |
+help: Remove assignment to unused variable `e`
+
+E501 Line too long (94 > 88)
+   --> mors/leasehandler/nova_lease_handler.py:118:89
+    |
+116 |             with self._get_nova_client() as nova:
+117 |                 for vm in vms:
+118 |                     result[vm['instance_uuid']] = self._poweroff_vm(nova, vm['instance_uuid'])
+    |                                                                                         ^^^^^^
+119 |             return result
+120 |         except Exception as e:
+    |
+
+F841 [*] Local variable `e` is assigned to but never used
+   --> mors/leasehandler/nova_lease_handler.py:120:29
+    |
+118 |                     result[vm['instance_uuid']] = self._poweroff_vm(nova, vm['instance_uuid'])
+119 |             return result
+120 |         except Exception as e:
+    |                             ^
+121 |             logger.exception("Error powering off vm %s", vms)
+122 |         return result
+    |
+help: Remove assignment to unused variable `e`
+
+E501 Line too long (92 > 88)
+   --> mors/leasehandler/nova_lease_handler.py:135:89
+    |
+133 |             with self._get_nova_client() as nova:
+134 |                 for vm in vms:
+135 |                     result[vm['instance_uuid']] = self._delete_vm(nova, vm['instance_uuid'])
+    |                                                                                         ^^^^
+136 |             return result
+137 |         except Exception as e:
+    |
+
+F841 [*] Local variable `e` is assigned to but never used
+   --> mors/leasehandler/nova_lease_handler.py:137:29
+    |
+135 |                     result[vm['instance_uuid']] = self._delete_vm(nova, vm['instance_uuid'])
+136 |             return result
+137 |         except Exception as e:
+    |                             ^
+138 |             logger.exception("Error deleting vm %s", vms)
+139 |         return result
+    |
+help: Remove assignment to unused variable `e`
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/mors_manage.py:18:1
+   |
+16 |   """
+17 |
+18 | / import argparse
+19 | | from migrate.versioning.api import upgrade, version_control
+20 | | from migrate.exceptions import DatabaseAlreadyControlledError
+21 | |
+22 | | from six.moves.configparser import ConfigParser
+   | |_______________________________________________^
+23 |
+24 |   def _get_arg_parser():
+   |
+help: Organize imports
+
+E501 Line too long (93 > 88)
+  --> mors/mors_manage.py:26:89
+   |
+24 | def _get_arg_parser():
+25 |     parser = argparse.ArgumentParser(description="Lease Manager for VirtualMachines")
+26 |     parser.add_argument('--config-file', dest='config_file', default='/etc/pf9/pf9-mors.ini')
+   |                                                                                         ^^^^^
+27 |     parser.add_argument('--command', dest='command', default='db_sync')
+28 |     return parser.parse_args()
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/mors_wsgi.py:16:1
+   |
+14 |   limitations under the License.
+15 |   """
+16 | / from flask import Flask, request, jsonify
+17 | | from .lease_manager import LeaseManager
+18 | | from .context_util import enforce, get_context, error_handler
+19 | | from flask.json import JSONEncoder
+20 | | from datetime import datetime
+   | |_____________________________^
+21 |
+22 |   DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+   |
+help: Organize imports
+
+E501 Line too long (97 > 88)
+  --> mors/mors_wsgi.py:92:89
+   |
+90 | @error_handler
+91 | def get_tenant_and_instances(tenant_id):
+92 |     instances = lease_manager.get_tenant_and_associated_instance_leases(get_context(), tenant_id)
+   |                                                                                         ^^^^^^^^^
+93 |     if not instances:
+94 |         return jsonify({'success': False}), 404, {'ContentType': 'application/json'}
+   |
+
+F401 [*] `flask.Flask` imported but unused
+   --> mors/mors_wsgi.py:148:23
+    |
+146 | def health_app_factory(global_config, **local_conf):
+147 |     """Factory for /health pipeline – only exposes health endpoints"""
+148 |     from flask import Flask, jsonify
+    |                       ^^^^^
+149 |
+150 |     @health_app.route("/live", methods=["GET"])
+    |
+help: Remove unused import: `flask.Flask`
+
+E501 Line too long (97 > 88)
+   --> mors/mors_wsgi.py:167:89
+    |
+165 |             if not scheduler_healthy:
+166 |                 return jsonify(
+167 |                     {"status": "not ready", "reason": f"Scheduler unhealthy: {scheduler_status}"}
+    |                                                                                         ^^^^^^^^^
+168 |                 ), 503
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/persistence.py:16:1
+   |
+14 |   limitations under the License.
+15 |   """
+16 | / import functools
+17 | | import logging
+18 | |
+19 | | from sqlalchemy import Table, MetaData
+20 | | from sqlalchemy import create_engine
+21 | | from sqlalchemy.pool import QueuePool
+22 | | from mors.constants import LOGGER_PREFIX
+   | |________________________________________^
+23 |
+24 |   logger = logging.getLogger(LOGGER_PREFIX+__name__)
+   |
+help: Organize imports
+
+E501 Line too long (109 > 88)
+  --> mors/persistence.py:77:89
+   |
+75 |     @db_connect(transaction=False)
+76 |     def get_tenant_lease(self, conn, tenant_uuid):
+77 |         return conn.execute(self.tenant_lease.select(self.tenant_lease.c.tenant_uuid == tenant_uuid)).first()
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^
+78 |
+79 |     @db_connect(transaction=True)
+   |
+
+E501 Line too long (95 > 88)
+  --> mors/persistence.py:80:89
+   |
+79 |     @db_connect(transaction=True)
+80 |     def add_tenant_lease(self, conn, tenant_uuid, expiry_mins, action, created_by, created_at):
+   |                                                                                         ^^^^^^^
+81 |         logger.debug("Adding tenant lease %s %d %s %s %s", tenant_uuid, expiry_mins, action, str(created_at), created_by)
+82 |         conn.execute(self.tenant_lease.insert(), tenant_uuid=tenant_uuid, expiry_mins=expiry_mins,
+   |
+
+E501 Line too long (121 > 88)
+  --> mors/persistence.py:81:89
+   |
+79 |     @db_connect(transaction=True)
+80 |     def add_tenant_lease(self, conn, tenant_uuid, expiry_mins, action, created_by, created_at):
+81 |         logger.debug("Adding tenant lease %s %d %s %s %s", tenant_uuid, expiry_mins, action, str(created_at), created_by)
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+82 |         conn.execute(self.tenant_lease.insert(), tenant_uuid=tenant_uuid, expiry_mins=expiry_mins,
+83 |                      action=action, created_at=created_at, created_by=created_by)
+   |
+
+E501 Line too long (98 > 88)
+  --> mors/persistence.py:82:89
+   |
+80 |     def add_tenant_lease(self, conn, tenant_uuid, expiry_mins, action, created_by, created_at):
+81 |         logger.debug("Adding tenant lease %s %d %s %s %s", tenant_uuid, expiry_mins, action, str(created_at), created_by)
+82 |         conn.execute(self.tenant_lease.insert(), tenant_uuid=tenant_uuid, expiry_mins=expiry_mins,
+   |                                                                                         ^^^^^^^^^^
+83 |                      action=action, created_at=created_at, created_by=created_by)
+   |
+
+E501 Line too long (98 > 88)
+  --> mors/persistence.py:86:89
+   |
+85 |     @db_connect(transaction=True)
+86 |     def update_tenant_lease(self, conn, tenant_uuid, expiry_mins, action, updated_by, updated_at):
+   |                                                                                         ^^^^^^^^^^
+87 |         logger.debug("Updating tenant lease %s %d %s %s %s", tenant_uuid, expiry_mins, action, str(updated_at), updated_by)
+88 |         conn.execute(self.tenant_lease.update().where(
+   |
+
+E501 Line too long (123 > 88)
+  --> mors/persistence.py:87:89
+   |
+85 |     @db_connect(transaction=True)
+86 |     def update_tenant_lease(self, conn, tenant_uuid, expiry_mins, action, updated_by, updated_at):
+87 |         logger.debug("Updating tenant lease %s %d %s %s %s", tenant_uuid, expiry_mins, action, str(updated_at), updated_by)
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+88 |         conn.execute(self.tenant_lease.update().where(
+89 |             self.tenant_lease.c.tenant_uuid == tenant_uuid).
+   |
+
+E501 Line too long (102 > 88)
+  --> mors/persistence.py:97:89
+   |
+95 |         # Should we just soft delete ?
+96 |         logger.debug("Deleting tenant lease %s", tenant_uuid)
+97 |         conn.execute(self.tenant_lease.delete().where(self.tenant_lease.c.tenant_uuid == tenant_uuid))
+   |                                                                                         ^^^^^^^^^^^^^^
+98 |         conn.execute(self.instance_lease.delete().where(self.instance_lease.c.tenant_uuid == tenant_uuid))
+   |
+
+E501 Line too long (106 > 88)
+   --> mors/persistence.py:98:89
+    |
+ 96 |         logger.debug("Deleting tenant lease %s", tenant_uuid)
+ 97 |         conn.execute(self.tenant_lease.delete().where(self.tenant_lease.c.tenant_uuid == tenant_uuid))
+ 98 |         conn.execute(self.instance_lease.delete().where(self.instance_lease.c.tenant_uuid == tenant_uuid))
+    |                                                                                         ^^^^^^^^^^^^^^^^^^
+ 99 |
+100 |     @db_connect(transaction=False)
+    |
+
+E501 Line too long (107 > 88)
+   --> mors/persistence.py:111:89
+    |
+110 |     @db_connect(transaction=True)
+111 |     def add_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, action, created_by, created_at):
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^
+112 |         logger.debug("Adding instance lease %s %s %s %s %s", instance_uuid, tenant_uuid, expiry, action, created_by)
+113 |         conn.execute(self.instance_lease.insert(), instance_uuid=instance_uuid, tenant_uuid=tenant_uuid,
+    |
+
+E501 Line too long (116 > 88)
+   --> mors/persistence.py:112:89
+    |
+110 |     @db_connect(transaction=True)
+111 |     def add_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, action, created_by, created_at):
+112 |         logger.debug("Adding instance lease %s %s %s %s %s", instance_uuid, tenant_uuid, expiry, action, created_by)
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+113 |         conn.execute(self.instance_lease.insert(), instance_uuid=instance_uuid, tenant_uuid=tenant_uuid,
+114 |                      expiry=expiry, action=action,
+    |
+
+E501 Line too long (104 > 88)
+   --> mors/persistence.py:113:89
+    |
+111 |     def add_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, action, created_by, created_at):
+112 |         logger.debug("Adding instance lease %s %s %s %s %s", instance_uuid, tenant_uuid, expiry, action, created_by)
+113 |         conn.execute(self.instance_lease.insert(), instance_uuid=instance_uuid, tenant_uuid=tenant_uuid,
+    |                                                                                         ^^^^^^^^^^^^^^^^
+114 |                      expiry=expiry, action=action,
+115 |                      created_at=created_at, created_by=created_by)
+    |
+
+E501 Line too long (110 > 88)
+   --> mors/persistence.py:118:89
+    |
+117 |     @db_connect(transaction=True)
+118 |     def update_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, action, updated_by, updated_at):
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^
+119 |         logger.debug("Updating instance lease %s %s %s %s %s", instance_uuid, tenant_uuid, expiry, action, updated_by)
+120 |         conn.execute(self.instance_lease.update().where(
+    |
+
+E501 Line too long (118 > 88)
+   --> mors/persistence.py:119:89
+    |
+117 |     @db_connect(transaction=True)
+118 |     def update_instance_lease(self, conn, instance_uuid, tenant_uuid, expiry, action, updated_by, updated_at):
+119 |         logger.debug("Updating instance lease %s %s %s %s %s", instance_uuid, tenant_uuid, expiry, action, updated_by)
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+120 |         conn.execute(self.instance_lease.update().where(
+121 |             self.instance_lease.c.instance_uuid == instance_uuid).values
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/pf9_mors.py:18:1
+   |
+16 | """
+17 |
+18 | import eventlet
+   | ^^^^^^^^^^^^^^^
+19 | eventlet.monkey_patch()
+20 | from eventlet import wsgi
+   |
+help: Organize imports
+
+E402 Module level import not at top of file
+  --> mors/pf9_mors.py:20:1
+   |
+18 | import eventlet
+19 | eventlet.monkey_patch()
+20 | from eventlet import wsgi
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^
+21 | from paste.deploy import loadapp
+22 | import argparse, logging
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> mors/pf9_mors.py:20:1
+   |
+18 |   import eventlet
+19 |   eventlet.monkey_patch()
+20 | / from eventlet import wsgi
+21 | | from paste.deploy import loadapp
+22 | | import argparse, logging
+23 | | import logging.handlers
+24 | | import os
+25 | | from mors import mors_wsgi
+26 | |
+27 | | from six.moves.configparser import ConfigParser
+   | |_______________________________________________^
+   |
+help: Organize imports
+
+E402 Module level import not at top of file
+  --> mors/pf9_mors.py:21:1
+   |
+19 | eventlet.monkey_patch()
+20 | from eventlet import wsgi
+21 | from paste.deploy import loadapp
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+22 | import argparse, logging
+23 | import logging.handlers
+   |
+
+E401 [*] Multiple imports on one line
+  --> mors/pf9_mors.py:22:1
+   |
+20 | from eventlet import wsgi
+21 | from paste.deploy import loadapp
+22 | import argparse, logging
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+23 | import logging.handlers
+24 | import os
+   |
+help: Split imports
+
+E402 Module level import not at top of file
+  --> mors/pf9_mors.py:22:1
+   |
+20 | from eventlet import wsgi
+21 | from paste.deploy import loadapp
+22 | import argparse, logging
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+23 | import logging.handlers
+24 | import os
+   |
+
+E402 Module level import not at top of file
+  --> mors/pf9_mors.py:23:1
+   |
+21 | from paste.deploy import loadapp
+22 | import argparse, logging
+23 | import logging.handlers
+   | ^^^^^^^^^^^^^^^^^^^^^^^
+24 | import os
+25 | from mors import mors_wsgi
+   |
+
+E402 Module level import not at top of file
+  --> mors/pf9_mors.py:24:1
+   |
+22 | import argparse, logging
+23 | import logging.handlers
+24 | import os
+   | ^^^^^^^^^
+25 | from mors import mors_wsgi
+   |
+
+F401 [*] `os` imported but unused
+  --> mors/pf9_mors.py:24:8
+   |
+22 | import argparse, logging
+23 | import logging.handlers
+24 | import os
+   |        ^^
+25 | from mors import mors_wsgi
+   |
+help: Remove unused import: `os`
+
+E402 Module level import not at top of file
+  --> mors/pf9_mors.py:25:1
+   |
+23 | import logging.handlers
+24 | import os
+25 | from mors import mors_wsgi
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+26 |
+27 | from six.moves.configparser import ConfigParser
+   |
+
+E402 Module level import not at top of file
+  --> mors/pf9_mors.py:27:1
+   |
+25 | from mors import mors_wsgi
+26 |
+27 | from six.moves.configparser import ConfigParser
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+
+E501 Line too long (93 > 88)
+  --> mors/pf9_mors.py:32:89
+   |
+30 | def _get_arg_parser():
+31 |     parser = argparse.ArgumentParser(description="Lease Manager for VirtualMachines")
+32 |     parser.add_argument('--config-file', dest='config_file', default='/etc/pf9/pf9-mors.ini')
+   |                                                                                         ^^^^^
+33 |     parser.add_argument('--paste-ini', dest='paste_file')
+34 |     return parser.parse_args()
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> mors_repo/versions/001_Add_initial_tables.py:2:1
+  |
+1 | # Copyright Platform9 Systems Inc. 2016
+2 | from sqlalchemy import Table, Column, Integer, String, MetaData, DateTime
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 |
+4 | meta = MetaData()
+  |
+help: Organize imports
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> mors_repo/versions/002_Alter_tenant_lease_to_mins.py:2:1
+  |
+1 | # Copyright Platform9 Systems Inc. 2016
+2 | from sqlalchemy import MetaData, String, Table
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3 |
+4 | def upgrade(migrate_engine):
+  |
+help: Organize imports
+
+F401 [*] `sqlalchemy.String` imported but unused
+ --> mors_repo/versions/002_Alter_tenant_lease_to_mins.py:2:34
+  |
+1 | # Copyright Platform9 Systems Inc. 2016
+2 | from sqlalchemy import MetaData, String, Table
+  |                                  ^^^^^^
+3 |
+4 | def upgrade(migrate_engine):
+  |
+help: Remove unused import: `sqlalchemy.String`
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> test/run_tests.py:17:5
+   |
+15 |   """
+16 |   def run_tests():
+17 | /     from proboscis import TestProgram
+18 | |
+19 | |     import test_api, test_persistence
+   | |_____________________________________^
+20 |
+21 |       # Run Proboscis and exit.
+   |
+help: Organize imports
+
+E401 [*] Multiple imports on one line
+  --> test/run_tests.py:19:5
+   |
+17 |     from proboscis import TestProgram
+18 |
+19 |     import test_api, test_persistence
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+20 |
+21 |     # Run Proboscis and exit.
+   |
+help: Split imports
+
+F401 [*] `test_api` imported but unused
+  --> test/run_tests.py:19:12
+   |
+17 |     from proboscis import TestProgram
+18 |
+19 |     import test_api, test_persistence
+   |            ^^^^^^^^
+20 |
+21 |     # Run Proboscis and exit.
+   |
+help: Remove unused import
+
+F401 [*] `test_persistence` imported but unused
+  --> test/run_tests.py:19:22
+   |
+17 |     from proboscis import TestProgram
+18 |
+19 |     import test_api, test_persistence
+   |                      ^^^^^^^^^^^^^^^^
+20 |
+21 |     # Run Proboscis and exit.
+   |
+help: Remove unused import
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> test/test_api.py:16:1
+   |
+14 |   limitations under the License.
+15 |   """
+16 | / import os
+17 | | import sys;
+18 | | import time;
+19 | | import eventlet
+20 | | import requests
+21 | | from migrate.versioning.api import upgrade, version_control
+   | |___________________________________________________________^
+22 |
+23 |   print(sys.path)
+   |
+help: Organize imports
+
+E703 [*] Statement ends with an unnecessary semicolon
+  --> test/test_api.py:17:11
+   |
+15 | """
+16 | import os
+17 | import sys;
+   |           ^
+18 | import time;
+19 | import eventlet
+   |
+help: Remove unnecessary semicolon
+
+E703 [*] Statement ends with an unnecessary semicolon
+  --> test/test_api.py:18:12
+   |
+16 | import os
+17 | import sys;
+18 | import time;
+   |            ^
+19 | import eventlet
+20 | import requests
+   |
+help: Remove unnecessary semicolon
+
+E402 Module level import not at top of file
+  --> test/test_api.py:24:1
+   |
+23 | print(sys.path)
+24 | from mors.pf9_mors import start_server
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+25 | from mors.mors_wsgi import DATE_FORMAT
+26 | import logging, sys
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> test/test_api.py:24:1
+   |
+23 |   print(sys.path)
+24 | / from mors.pf9_mors import start_server
+25 | | from mors.mors_wsgi import DATE_FORMAT
+26 | | import logging, sys
+27 | | from datetime import datetime, timedelta
+28 | | from proboscis.asserts import assert_equal
+29 | | from proboscis import test
+30 | | import shutil
+31 | | from mors.leasehandler.fake_lease_handler import FakeLeaseHandler
+32 | |
+33 | | from six.moves.configparser import ConfigParser
+   | |_______________________________________________^
+34 |   try:
+35 |       import http.client as http_client
+   |
+help: Organize imports
+
+E402 Module level import not at top of file
+  --> test/test_api.py:25:1
+   |
+23 | print(sys.path)
+24 | from mors.pf9_mors import start_server
+25 | from mors.mors_wsgi import DATE_FORMAT
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+26 | import logging, sys
+27 | from datetime import datetime, timedelta
+   |
+
+E401 [*] Multiple imports on one line
+  --> test/test_api.py:26:1
+   |
+24 | from mors.pf9_mors import start_server
+25 | from mors.mors_wsgi import DATE_FORMAT
+26 | import logging, sys
+   | ^^^^^^^^^^^^^^^^^^^
+27 | from datetime import datetime, timedelta
+28 | from proboscis.asserts import assert_equal
+   |
+help: Split imports
+
+E402 Module level import not at top of file
+  --> test/test_api.py:26:1
+   |
+24 | from mors.pf9_mors import start_server
+25 | from mors.mors_wsgi import DATE_FORMAT
+26 | import logging, sys
+   | ^^^^^^^^^^^^^^^^^^^
+27 | from datetime import datetime, timedelta
+28 | from proboscis.asserts import assert_equal
+   |
+
+E402 Module level import not at top of file
+  --> test/test_api.py:27:1
+   |
+25 | from mors.mors_wsgi import DATE_FORMAT
+26 | import logging, sys
+27 | from datetime import datetime, timedelta
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+28 | from proboscis.asserts import assert_equal
+29 | from proboscis import test
+   |
+
+E402 Module level import not at top of file
+  --> test/test_api.py:28:1
+   |
+26 | import logging, sys
+27 | from datetime import datetime, timedelta
+28 | from proboscis.asserts import assert_equal
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+29 | from proboscis import test
+30 | import shutil
+   |
+
+E402 Module level import not at top of file
+  --> test/test_api.py:29:1
+   |
+27 | from datetime import datetime, timedelta
+28 | from proboscis.asserts import assert_equal
+29 | from proboscis import test
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+30 | import shutil
+31 | from mors.leasehandler.fake_lease_handler import FakeLeaseHandler
+   |
+
+E402 Module level import not at top of file
+  --> test/test_api.py:30:1
+   |
+28 | from proboscis.asserts import assert_equal
+29 | from proboscis import test
+30 | import shutil
+   | ^^^^^^^^^^^^^
+31 | from mors.leasehandler.fake_lease_handler import FakeLeaseHandler
+   |
+
+E402 Module level import not at top of file
+  --> test/test_api.py:31:1
+   |
+29 | from proboscis import test
+30 | import shutil
+31 | from mors.leasehandler.fake_lease_handler import FakeLeaseHandler
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+32 |
+33 | from six.moves.configparser import ConfigParser
+   |
+
+E402 Module level import not at top of file
+  --> test/test_api.py:33:1
+   |
+31 | from mors.leasehandler.fake_lease_handler import FakeLeaseHandler
+32 |
+33 | from six.moves.configparser import ConfigParser
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+34 | try:
+35 |     import http.client as http_client
+   |
+
+E501 Line too long (107 > 88)
+  --> test/test_api.py:76:89
+   |
+74 |     dt = timedelta(days=3)
+75 |     creation_time = now - dt
+76 |     t1_vms = [{'instance_uuid': 'instance-123-t1', 'tenant_uuid': tenant_id1, 'created_at': creation_time},
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^
+77 |               {'instance_uuid': 'instance-456-t1', 'tenant_uuid': tenant_id1, 'created_at': now},
+78 |               {'instance_uuid': instance_id1, 'tenant_uuid': tenant_id1, 'created_at': now},
+   |
+
+E501 Line too long (97 > 88)
+  --> test/test_api.py:77:89
+   |
+75 |     creation_time = now - dt
+76 |     t1_vms = [{'instance_uuid': 'instance-123-t1', 'tenant_uuid': tenant_id1, 'created_at': creation_time},
+77 |               {'instance_uuid': 'instance-456-t1', 'tenant_uuid': tenant_id1, 'created_at': now},
+   |                                                                                         ^^^^^^^^^
+78 |               {'instance_uuid': instance_id1, 'tenant_uuid': tenant_id1, 'created_at': now},
+79 |               {'instance_uuid': instance_id2, 'tenant_uuid': tenant_id1, 'created_at': now}]
+   |
+
+E501 Line too long (92 > 88)
+  --> test/test_api.py:78:89
+   |
+76 |     t1_vms = [{'instance_uuid': 'instance-123-t1', 'tenant_uuid': tenant_id1, 'created_at': creation_time},
+77 |               {'instance_uuid': 'instance-456-t1', 'tenant_uuid': tenant_id1, 'created_at': now},
+78 |               {'instance_uuid': instance_id1, 'tenant_uuid': tenant_id1, 'created_at': now},
+   |                                                                                         ^^^^
+79 |               {'instance_uuid': instance_id2, 'tenant_uuid': tenant_id1, 'created_at': now}]
+80 |     fakeLeaseHandler.add_tenant_data(tenant_id1, t1_vms)
+   |
+
+E501 Line too long (92 > 88)
+  --> test/test_api.py:79:89
+   |
+77 |               {'instance_uuid': 'instance-456-t1', 'tenant_uuid': tenant_id1, 'created_at': now},
+78 |               {'instance_uuid': instance_id1, 'tenant_uuid': tenant_id1, 'created_at': now},
+79 |               {'instance_uuid': instance_id2, 'tenant_uuid': tenant_id1, 'created_at': now}]
+   |                                                                                         ^^^^
+80 |     fakeLeaseHandler.add_tenant_data(tenant_id1, t1_vms)
+   |
+
+E501 Line too long (107 > 88)
+  --> test/test_api.py:82:89
+   |
+80 |     fakeLeaseHandler.add_tenant_data(tenant_id1, t1_vms)
+81 |
+82 |     t2_vms = [{'instance_uuid': 'instance-123-t2', 'tenant_uuid': tenant_id2, 'created_at': creation_time},
+   |                                                                                         ^^^^^^^^^^^^^^^^^^^
+83 |               {'instance_uuid': 'instance-456-t2', 'tenant_uuid': tenant_id2, 'created_at': now},
+84 |               {'instance_uuid': instance_id3, 'tenant_uuid': tenant_id2, 'created_at': now}]
+   |
+
+E501 Line too long (97 > 88)
+  --> test/test_api.py:83:89
+   |
+82 |     t2_vms = [{'instance_uuid': 'instance-123-t2', 'tenant_uuid': tenant_id2, 'created_at': creation_time},
+83 |               {'instance_uuid': 'instance-456-t2', 'tenant_uuid': tenant_id2, 'created_at': now},
+   |                                                                                         ^^^^^^^^^
+84 |               {'instance_uuid': instance_id3, 'tenant_uuid': tenant_id2, 'created_at': now}]
+85 |     fakeLeaseHandler.add_tenant_data(tenant_id2, t2_vms)
+   |
+
+E501 Line too long (92 > 88)
+  --> test/test_api.py:84:89
+   |
+82 |     t2_vms = [{'instance_uuid': 'instance-123-t2', 'tenant_uuid': tenant_id2, 'created_at': creation_time},
+83 |               {'instance_uuid': 'instance-456-t2', 'tenant_uuid': tenant_id2, 'created_at': now},
+84 |               {'instance_uuid': instance_id3, 'tenant_uuid': tenant_id2, 'created_at': now}]
+   |                                                                                         ^^^^
+85 |     fakeLeaseHandler.add_tenant_data(tenant_id2, t2_vms)
+   |
+
+E501 Line too long (94 > 88)
+   --> test/test_api.py:104:89
+    |
+103 |     _setup_lease_handler()
+104 |     api_paste_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'api-paste.ini')
+    |                                                                                         ^^^^^^
+105 |     eventlet.greenthread.spawn(start_server, conf, api_paste_file)
+106 |     eventlet.greenthread.sleep(5)
+    |
+
+E501 Line too long (124 > 88)
+   --> test/test_api.py:112:89
+    |
+110 | def test_create_tenant():
+111 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1,
+112 |                       json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": expiry_mins1, "action": action1}},
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+113 |                       headers=headers)
+114 |     logger.debug(r.text)
+    |
+
+E501 Line too long (129 > 88)
+   --> test/test_api.py:121:89
+    |
+119 | def test_update_tenant():
+120 |     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1,
+121 |                      json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": 3, "action": action1}}, headers=headers)
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+122 |     logger.debug(r.text)
+123 |     assert_equal(r.status_code, 200)
+    |
+
+E501 Line too long (94 > 88)
+   --> test/test_api.py:136:89
+    |
+134 | @test(depends_on=[test_get_all_tenants])
+135 | def test_get_tenant():
+136 |     r = requests.get('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1, headers=headers)
+    |                                                                                         ^^^^^^
+137 |     logger.debug(r.text)
+138 |     assert_equal(r.status_code, 200)
+    |
+
+E501 Line too long (124 > 88)
+   --> test/test_api.py:145:89
+    |
+143 |     # Try creating again and it should result in error
+144 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1,
+145 |                       json={"vm_lease_policy": {"tenant_uuid": tenant_id1, "expiry_mins": expiry_mins1, "action": action1}},
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+146 |                       headers=headers)
+147 |     logger.debug(r.text)
+    |
+
+E501 Line too long (108 > 88)
+   --> test/test_api.py:156:89
+    |
+154 |     expiry = datetime.utcnow() + timedelta(minutes=1)
+155 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+156 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^
+157 |                       json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
+158 |                       headers=headers)
+    |
+
+E501 Line too long (100 > 88)
+   --> test/test_api.py:157:89
+    |
+155 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+156 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+157 |                       json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
+    |                                                                                         ^^^^^^^^^^^^
+158 |                       headers=headers)
+159 |     logger.debug(r.text)
+    |
+
+E501 Line too long (107 > 88)
+   --> test/test_api.py:165:89
+    |
+163 | @test(depends_on=[test_create_instance])
+164 | def test_get_instance():
+165 |     r = requests.get('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^
+166 |                      headers=headers)
+167 |     logger.debug(r.text)
+    |
+
+E501 Line too long (107 > 88)
+   --> test/test_api.py:174:89
+    |
+172 |     expiry = datetime.utcnow() + timedelta(minutes=1)
+173 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+174 |     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^
+175 |                       json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
+176 |                       headers=headers)
+    |
+
+E501 Line too long (100 > 88)
+   --> test/test_api.py:175:89
+    |
+173 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+174 |     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+175 |                       json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
+    |                                                                                         ^^^^^^^^^^^^
+176 |                       headers=headers)
+177 |     logger.debug(r.text)
+    |
+
+E501 Line too long (107 > 88)
+   --> test/test_api.py:184:89
+    |
+182 |     expiry = datetime.utcnow() + timedelta(days=4)
+183 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+184 |     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^
+185 |                       json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
+186 |                       headers=headers)
+    |
+
+E501 Line too long (100 > 88)
+   --> test/test_api.py:185:89
+    |
+183 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+184 |     r = requests.put('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+185 |                       json={"instance_uuid": instance_id1, "expiry": expiry_str, "action": action1},
+    |                                                                                         ^^^^^^^^^^^^
+186 |                       headers=headers)
+187 |     logger.debug(r.text)
+    |
+
+E501 Line too long (107 > 88)
+   --> test/test_api.py:192:89
+    |
+190 | @test(depends_on=[test_update_instance])
+191 | def test_get_instance2():
+192 |     r = requests.get('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^
+193 |                      headers=headers)
+194 |     logger.debug(r.text)
+    |
+
+E501 Line too long (98 > 88)
+   --> test/test_api.py:204:89
+    |
+202 |     while time.time() < timeout:
+203 |         r = requests.get(
+204 |             'http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id1,
+    |                                                                                         ^^^^^^^^^^
+205 |             headers=headers
+206 |         )
+    |
+
+E501 Line too long (108 > 88)
+   --> test/test_api.py:220:89
+    |
+218 |     expiry = datetime.utcnow() + timedelta(minutes=1)
+219 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+220 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id2,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^
+221 |                       json={"instance_uuid": instance_id2, "expiry": expiry_str, "action": action2},
+222 |                       headers=headers)
+    |
+
+E501 Line too long (100 > 88)
+   --> test/test_api.py:221:89
+    |
+219 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+220 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id2,
+221 |                       json={"instance_uuid": instance_id2, "expiry": expiry_str, "action": action2},
+    |                                                                                         ^^^^^^^^^^^^
+222 |                       headers=headers)
+223 |     logger.debug(r.text)
+    |
+
+E501 Line too long (110 > 88)
+   --> test/test_api.py:229:89
+    |
+227 | @test(depends_on=[test_create_instance2])
+228 | def test_delete_instance_lease():
+229 |     r = requests.delete('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id1 + '/instance/' + instance_id2,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^
+230 |                         json={"tenant_uuid": tenant_id1, "instance_uuid": instance_id2},
+231 |                         headers=headers)
+    |
+
+E501 Line too long (124 > 88)
+   --> test/test_api.py:239:89
+    |
+237 | def test_create_tenant2():
+238 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2,
+239 |                       json={"vm_lease_policy": {"tenant_uuid": tenant_id2, "expiry_mins": expiry_mins1, "action": action2}},
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+240 |                       headers=headers)
+241 |     logger.debug(r.text)
+    |
+
+E501 Line too long (108 > 88)
+   --> test/test_api.py:250:89
+    |
+248 |     expiry = datetime.utcnow() + timedelta(minutes=1)
+249 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+250 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2 + '/instance/' + instance_id3,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^
+251 |                       json={"tenant_uuid": tenant_id2, "instance_uuid": instance_id3, "expiry": expiry_str, "action": action2},
+252 |                       headers=headers)
+    |
+
+E501 Line too long (127 > 88)
+   --> test/test_api.py:251:89
+    |
+249 |     expiry_str = datetime.strftime(expiry, DATE_FORMAT)
+250 |     r = requests.post('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2 + '/instance/' + instance_id3,
+251 |                       json={"tenant_uuid": tenant_id2, "instance_uuid": instance_id3, "expiry": expiry_str, "action": action2},
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+252 |                       headers=headers)
+253 |     logger.debug(r.text)
+    |
+
+E501 Line too long (94 > 88)
+   --> test/test_api.py:267:89
+    |
+265 | @test(depends_on=[test_delete_tenant2])
+266 | def test_get_tenant2():
+267 |     r = requests.get('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2, headers=headers)
+    |                                                                                         ^^^^^^
+268 |     logger.debug(r.text)
+269 |     assert_equal(r.status_code, 404)
+    |
+
+E501 Line too long (107 > 88)
+   --> test/test_api.py:274:89
+    |
+272 | @test(depends_on=[test_delete_tenant2])
+273 | def test_get_instance3():
+274 |     r = requests.get('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2 + '/instance/' + instance_id3,
+    |                                                                                         ^^^^^^^^^^^^^^^^^^^
+275 |                      headers=headers)
+276 |     logger.debug(r.text)
+    |
+
+E501 Line too long (93 > 88)
+   --> test/test_api.py:282:89
+    |
+280 | @test(depends_on=[test_get_instance3])
+281 | def test_get_all_instances_for_tenant2():
+282 |     r = requests.get('http://127.0.0.1:' + port + '/v1/tenant/' + tenant_id2 + '/instances/',
+    |                                                                                         ^^^^^
+283 |                      headers=headers)
+284 |     logger.debug(r.text)
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> test/test_persistence.py:16:1
+   |
+14 |   limitations under the License.
+15 |   """
+16 | / from proboscis import test
+17 | | from mors.persistence import DbPersistence
+18 | | import uuid
+19 | | import logging
+20 | | from migrate.versioning.api import upgrade,create,version_control
+21 | | from datetime import datetime, timedelta
+22 | | import os
+23 | | import shutil
+   | |_____________^
+24 |
+25 |   logger = logging.getLogger(__name__)
+   |
+help: Organize imports
+
+F401 [*] `uuid` imported but unused
+  --> test/test_persistence.py:18:8
+   |
+16 | from proboscis import test
+17 | from mors.persistence import DbPersistence
+18 | import uuid
+   |        ^^^^
+19 | import logging
+20 | from migrate.versioning.api import upgrade,create,version_control
+   |
+help: Remove unused import: `uuid`
+
+E501 Line too long (93 > 88)
+   --> test/test_persistence.py:120:89
+    |
+118 |     for instance_uuid in instances:
+119 |         instance = instances[instance_uuid]
+120 |         db_persistence.add_instance_lease(instance['instance_uuid'], instance['tenant_uuid'],
+    |                                                                                         ^^^^^
+121 |                                           instance['expiry'], instance['action'],
+122 |                                           instance["created_by"],
+    |
+
+E501 Line too long (96 > 88)
+   --> test/test_persistence.py:135:89
+    |
+133 |     for instance_uuid in instances:
+134 |         instance = instances[instance_uuid]
+135 |         db_persistence.update_instance_lease(instance['instance_uuid'], instance['tenant_uuid'],
+    |                                                                                         ^^^^^^^^
+136 |                                              instance['expiry'], instance['action'],
+137 |                                              instance["created_by"],
+    |
+
+Found 148 errors.
+[*] 46 fixable with the `--fix` option.
