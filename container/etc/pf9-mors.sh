@@ -2,8 +2,8 @@
 
 set -ex
 
-cat templates/pf9-mors.ini | envsubst > /etc/pf9/pf9-mors.ini
-cat templates/pf9-mors-api-paste.ini | envsubst > /etc/pf9/pf9-mors-api-paste.ini
+cat /root/templates/pf9-mors.ini | envsubst > /etc/pf9/pf9-mors.ini
+cat /root/templates/pf9-mors-api-paste.ini | envsubst > /etc/pf9/pf9-mors-api-paste.ini
 
 python /opt/pf9/pf9-mors/bin/mors_manage.py --command db_sync
 
