@@ -40,8 +40,8 @@ def configure_db():
     mors_db_user = os.environ["MORS_DB_USER"]
     mors_db_password = os.environ["MORS_DB_PASSWORD"]
 
-    admin_user = os.environ["ROOT_DB_USER"]
-    admin_password = os.environ["ROOT_DB_PASSWORD"]
+    admin_user = os.environ["DB_ROOT_USER"]
+    admin_password = os.environ["DB_ROOT_PASSWORD"]
 
     db = MySqlDatabase(host=db_host, port=int(db_port), admin_user=admin_user, admin_pass=admin_password)
 
