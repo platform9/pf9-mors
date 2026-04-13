@@ -25,6 +25,8 @@ APP_METADATA_JSON = $(STAGE)/app_metadata.json
 
 BUILD_ID := $(BUILD_NUMBER)
 CONTAINER_IMG ?= quay.io/platform9/pf9-mors
+ECR_PUBLIC_REGISTRY_HOSTNAME ?= public.ecr.aws/platform9
+ECR_PUBLIC_IMG ?= $(ECR_PUBLIC_REGISTRY_HOSTNAME)/pf9-mors
 IMAGE_TAG ?= $(or $(PF9_VERSION), "latest")-$(BUILD_ID)
 BRANCH_NAME ?= $(or $(TEAMCITY_BUILD_BRANCH), $(TEAMCITY_BUILD_BRANCH), $(shell git symbolic-ref --short HEAD))
 
@@ -59,8 +61,10 @@ image: stage
 	$(call image_build,$(IMAGE_TAG))
 
 define image_push
+	docker tag $(CONTAINER_IMG):$(1) $(ECR_PUBLIC_IMG):$(1) && \
 	docker push $(CONTAINER_IMG):$(1) && \
-	docker rmi $(CONTAINER_IMG):$(1) && \
+	docker push $(ECR_PUBLIC_IMG):$(1) && \
+	docker rmi $(CONTAINER_IMG):$(1) $(ECR_PUBLIC_IMG):$(1) && \
 	mkdir -p $(BLDROOT) && \
 	echo -ne "$(1)" >$(BLDROOT)/container-tag
 endef
