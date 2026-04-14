@@ -16,9 +16,11 @@ limitations under the License.
 
 from novaclient import client
 import logging
+import time
 import novaclient
 from keystoneauth1.identity import v3
 from keystoneauth1 import session
+from keystoneauth1 import exceptions as ks_exceptions
 from datetime import datetime
 from .constants import SUCCESS_OK, ERR_NOT_FOUND, ERR_UNKNOWN
 from mors.constants import LOGGER_PREFIX
@@ -32,11 +34,14 @@ def get_vm_data(data):
             'tenant_uuid': data.tenant_id,
             'created_at': datetime.strptime(data.created, DATE_FORMAT)}
 
+MAX_AUTH_RETRIES = 3
+AUTH_RETRY_DELAY = 5
+
 class NovaLeaseHandler:
     def __init__(self, conf):
         self.conf = conf
-        self.keystone_sess = self.get_keystone_session()                      
-        self.pf9_project_id = self.keystone_sess.get_project_id()
+        self.keystone_sess = self.get_keystone_session()
+        self.pf9_project_id = self._get_project_id_with_retry()
         self.nova_client = client.Client(self.conf.get("nova", "version"),
                              username=self.conf.get("nova", "user_name"),
                              region_name=self.conf.get("nova", "region_name"),
@@ -51,6 +56,37 @@ class NovaLeaseHandler:
     def _get_nova_client(self):
         return self.nova_client
 
+    def _get_project_id_with_retry(self):
+        auth_url = self.conf.get('nova', 'auth_url')
+        username = self.conf.get('nova', 'user_name')
+        for attempt in range(1, MAX_AUTH_RETRIES + 1):
+            try:
+                project_id = self.keystone_sess.get_project_id()
+                logger.info("Keystone authentication successful (attempt %d/%d)",
+                            attempt, MAX_AUTH_RETRIES)
+                return project_id
+            except ks_exceptions.Unauthorized:
+                logger.error(
+                    "Keystone auth failed (attempt %d/%d): 401 Unauthorized. "
+                    "auth_url=%s, username=%s. Verify credentials and that the "
+                    "user exists in Keystone.",
+                    attempt, MAX_AUTH_RETRIES, auth_url, username)
+            except ks_exceptions.ConnectFailure as e:
+                logger.error(
+                    "Keystone auth failed (attempt %d/%d): unable to connect "
+                    "to %s: %s",
+                    attempt, MAX_AUTH_RETRIES, auth_url, e)
+            except Exception as e:
+                logger.error(
+                    "Keystone auth failed (attempt %d/%d): %s",
+                    attempt, MAX_AUTH_RETRIES, e)
+            if attempt < MAX_AUTH_RETRIES:
+                logger.info("Retrying in %d seconds...", AUTH_RETRY_DELAY)
+                time.sleep(AUTH_RETRY_DELAY)
+        raise RuntimeError(
+            "Failed to authenticate with Keystone after %d attempts. "
+            "auth_url=%s, username=%s" % (MAX_AUTH_RETRIES, auth_url, username))
+
     def get_keystone_session(self):
         auth_params = {
              'auth_url': self.conf.get('nova', 'auth_url'),
@@ -61,7 +97,7 @@ class NovaLeaseHandler:
              'project_domain_id': 'default'
         }
         auth = v3.Password(**auth_params)
-        return session.Session(auth=auth) 
+        return session.Session(auth=auth)
 
     def get_all_vms(self, tenant_uuid):
         """
