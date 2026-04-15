@@ -146,12 +146,25 @@ class LeaseManager:
 
     def update_instance_lease(self, context, tenant_uuid, instance_lease_obj):
         logger.info("Update instance lease %s", instance_lease_obj)
+
+        current_time = datetime.utcnow()
+        if 'expiry' not in instance_lease_obj or instance_lease_obj['expiry'] <= current_time:
+            raise ValueError("Expiry time must be in the future")
+
+        tenant_lease = self.domain_mgr.get_tenant_lease(tenant_uuid)
+        if tenant_lease:
+            max_expiry = current_time + timedelta(minutes=tenant_lease['expiry_mins'])
+            if instance_lease_obj['expiry'] > max_expiry:
+                raise ValueError(
+                    "Expiry exceeds tenant policy maximum of %d minutes"
+                    % tenant_lease['expiry_mins'])
+
         self.domain_mgr.update_instance_lease(instance_lease_obj['instance_uuid'],
                                             tenant_uuid,
                                             instance_lease_obj['expiry'],
                                             instance_lease_obj['action'],
                                             context.user_id,
-                                            datetime.utcnow())
+                                            current_time)
         
 
     def delete_instance_lease(self, context, instance_uuid):

@@ -37,7 +37,7 @@ def _version_control(conf):
 if __name__ == '__main__':
     parser = _get_arg_parser()
     conf = ConfigParser()
-    conf.readfp(open(parser.config_file))
+    conf.read_file(open(parser.config_file))
     if 'db_sync' == parser.command:
         _version_control(conf)
         upgrade(conf.get("DEFAULT", "db_conn"), conf.get("DEFAULT", "repo"))
