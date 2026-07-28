@@ -1,0 +1,413 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.69.3"
+  },
+  "ReportID": "019e3d31-ac5f-7d33-a973-60849fc616c4",
+  "CreatedAt": "2026-05-18T22:25:26.111866176Z",
+  "ArtifactID": "sha256:e669f88fc8119eb8ba19cb2a1f2329069603e54260e3d41f80ed64626a798ec7",
+  "ArtifactName": ".",
+  "ArtifactType": "repository",
+  "Metadata": {
+    "RepoURL": "https://github.com/platform9/pf9-mors",
+    "Branch": "main",
+    "Commit": "e6a4db09e2567b6d1d2b2ab2be588279a3858787",
+    "CommitMsg": "noconsul changes (#31)\n\nCo-authored-by: Thomas Dell \u003ctdell@platform9.com\u003e",
+    "Author": "Thomas Dell \u003cscriptory@users.noreply.github.com\u003e",
+    "Committer": "GitHub \u003cnoreply@github.com\u003e"
+  },
+  "Results": [
+    {
+      "Target": "container/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Packages": [
+        {
+          "Name": "Jinja2",
+          "Identifier": {
+            "PURL": "pkg:pypi/jinja2@3.1.4",
+            "UID": "a8cbe67546a6f0ea"
+          },
+          "Version": "3.1.4",
+          "Locations": [
+            {
+              "StartLine": 12,
+              "EndLine": 12
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "Paste",
+          "Identifier": {
+            "PURL": "pkg:pypi/paste@3.0.7",
+            "UID": "cfafd4ec560b0481"
+          },
+          "Version": "3.0.7",
+          "Locations": [
+            {
+              "StartLine": 7,
+              "EndLine": 7
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "PasteDeploy",
+          "Identifier": {
+            "PURL": "pkg:pypi/pastedeploy@2.0.1",
+            "UID": "b758c931a78d8ac9"
+          },
+          "Version": "2.0.1",
+          "Locations": [
+            {
+              "StartLine": 8,
+              "EndLine": 8
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "PyMySQL",
+          "Identifier": {
+            "PURL": "pkg:pypi/pymysql@1.1.1",
+            "UID": "9586f8b1ae4d573e"
+          },
+          "Version": "1.1.1",
+          "Locations": [
+            {
+              "StartLine": 17,
+              "EndLine": 17
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "SQLAlchemy",
+          "Identifier": {
+            "PURL": "pkg:pypi/sqlalchemy@1.2.19",
+            "UID": "8c01b290d3c1b11f"
+          },
+          "Version": "1.2.19",
+          "Locations": [
+            {
+              "StartLine": 15,
+              "EndLine": 15
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "eventlet",
+          "Identifier": {
+            "PURL": "pkg:pypi/eventlet@0.30.0",
+            "UID": "53f372be79882f4a"
+          },
+          "Version": "0.30.0",
+          "Locations": [
+            {
+              "StartLine": 18,
+              "EndLine": 18
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "flask",
+          "Identifier": {
+            "PURL": "pkg:pypi/flask@2.2.5",
+            "UID": "399e3ada754744a2"
+          },
+          "Version": "2.2.5",
+          "Locations": [
+            {
+              "StartLine": 11,
+              "EndLine": 11
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "itsdangerous",
+          "Identifier": {
+            "PURL": "pkg:pypi/itsdangerous@2.0",
+            "UID": "dbfa2063f0e00ef5"
+          },
+          "Version": "2.0",
+          "Locations": [
+            {
+              "StartLine": 14,
+              "EndLine": 14
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "keystoneauth1",
+          "Identifier": {
+            "PURL": "pkg:pypi/keystoneauth1@3.13.2",
+            "UID": "c330975a8c3b99f8"
+          },
+          "Version": "3.13.2",
+          "Locations": [
+            {
+              "StartLine": 2,
+              "EndLine": 2
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "keystonemiddleware",
+          "Identifier": {
+            "PURL": "pkg:pypi/keystonemiddleware@6.0.1",
+            "UID": "afe99217897735a9"
+          },
+          "Version": "6.0.1",
+          "Locations": [
+            {
+              "StartLine": 6,
+              "EndLine": 6
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "mysqlclient",
+          "Identifier": {
+            "PURL": "pkg:pypi/mysqlclient@2.1.1",
+            "UID": "2a0123c8b492a8b"
+          },
+          "Version": "2.1.1",
+          "Locations": [
+            {
+              "StartLine": 23,
+              "EndLine": 23
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "nose",
+          "Identifier": {
+            "PURL": "pkg:pypi/nose@1.3.7",
+            "UID": "ad6b463f042fb353"
+          },
+          "Version": "1.3.7",
+          "Locations": [
+            {
+              "StartLine": 20,
+              "EndLine": 20
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "oslo.i18n",
+          "Identifier": {
+            "PURL": "pkg:pypi/oslo.i18n@3.23.1",
+            "UID": "7364da6af5c8aa66"
+          },
+          "Version": "3.23.1",
+          "Locations": [
+            {
+              "StartLine": 3,
+              "EndLine": 3
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "oslo.serialization",
+          "Identifier": {
+            "PURL": "pkg:pypi/oslo.serialization@2.28.2",
+            "UID": "efa9ad286338a1e7"
+          },
+          "Version": "2.28.2",
+          "Locations": [
+            {
+              "StartLine": 4,
+              "EndLine": 4
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "oslo.utils",
+          "Identifier": {
+            "PURL": "pkg:pypi/oslo.utils@3.40.7",
+            "UID": "6bfca3d6de1f9597"
+          },
+          "Version": "3.40.7",
+          "Locations": [
+            {
+              "StartLine": 5,
+              "EndLine": 5
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "pbr",
+          "Identifier": {
+            "PURL": "pkg:pypi/pbr@5.1.3",
+            "UID": "8d88d65960894a82"
+          },
+          "Version": "5.1.3",
+          "Locations": [
+            {
+              "StartLine": 1,
+              "EndLine": 1
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "proboscis",
+          "Identifier": {
+            "PURL": "pkg:pypi/proboscis@1.2.6",
+            "UID": "e9db739fdf0e5387"
+          },
+          "Version": "1.2.6",
+          "Locations": [
+            {
+              "StartLine": 21,
+              "EndLine": 21
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "python-novaclient",
+          "Identifier": {
+            "PURL": "pkg:pypi/python-novaclient@13.0.2",
+            "UID": "794a5808efc53416"
+          },
+          "Version": "13.0.2",
+          "Locations": [
+            {
+              "StartLine": 10,
+              "EndLine": 10
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "requests",
+          "Identifier": {
+            "PURL": "pkg:pypi/requests@2.21.0",
+            "UID": "7c205784782a1db"
+          },
+          "Version": "2.21.0",
+          "Locations": [
+            {
+              "StartLine": 19,
+              "EndLine": 19
+            }
+          ],
+          "AnalyzedBy": "pip"
+        },
+        {
+          "Name": "sqlalchemy-migrate",
+          "Identifier": {
+            "PURL": "pkg:pypi/sqlalchemy-migrate@0.12.0",
+            "UID": "480f2bb6de577bf1"
+          },
+          "Version": "0.12.0",
+          "Locations": [
+            {
+              "StartLine": 16,
+              "EndLine": 16
+            }
+          ],
+          "AnalyzedBy": "pip"
+        }
+      ],
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2019-7164",
+          "VendorIDs": [
+            "GHSA-887w-45rq-vxgf"
+          ],
+          "PkgName": "SQLAlchemy",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/sqlalchemy@1.2.19",
+            "UID": "8c01b290d3c1b11f"
+          },
+          "InstalledVersion": "1.2.19",
+          "FixedVersion": "1.3.0b3",
+          "Status": "fixed",
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-7164",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Fingerprint": "sha256:430416bd3fcb4f87425adcbb5b08a4cf0d1d2ff78b124ef67f6da2f203e1fba6",
+          "Title": "python-sqlalchemy: SQL Injection when the order_by parameter can be controlled",
+          "Description": "SQLAlchemy through 1.2.17 and 1.3.x through 1.3.0b2 allows SQL Injection via the order_by parameter.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-89"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "ghsa": 4,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V40Vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+              "V3Score": 9.8,
+              "V40Score": 9.3
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 7.5,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 7.3
+            }
+          },
+          "References": [
+            "http://lists.opensuse.org/opensuse-security-announce/2019-08/msg00087.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-09/msg00010.html",
+            "http://lists.opensuse.org/opensuse-security-announce/2019-09/msg00016.html",
+            "https://access.redhat.com/errata/RHSA-2019:0981",
+            "https://access.redhat.com/errata/RHSA-2019:0984",
+            "https://access.redhat.com/security/cve/CVE-2019-7164",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1674059",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=1678520",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-7164",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-7548",
+            "https://errata.almalinux.org/8/ALSA-2019-0984.html",
+            "https://errata.rockylinux.org/RLSA-2019:0984",
+            "https://github.com/advisories/GHSA-887w-45rq-vxgf",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/sqlalchemy/PYSEC-2019-123.yaml",
+            "https://github.com/sqlalchemy/sqlalchemy",
+            "https://github.com/sqlalchemy/sqlalchemy/commit/30307c4616ad67c01ddae2e1e8e34fabf6028414",
+            "https://github.com/sqlalchemy/sqlalchemy/issues/4481",
+            "https://linux.oracle.com/cve/CVE-2019-7164.html",
+            "https://linux.oracle.com/errata/ELSA-2019-0984.html",
+            "https://lists.debian.org/debian-lts-announce/2019/03/msg00020.html",
+            "https://lists.debian.org/debian-lts-announce/2021/11/msg00005.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2019-7164",
+            "https://www.cve.org/CVERecord?id=CVE-2019-7164",
+            "https://www.oracle.com/security-alerts/cpujan2021.html"
+          ],
+          "PublishedDate": "2019-02-20T00:29:00.197Z",
+          "LastModifiedDate": "2024-11-21T04:47:41.96Z"
+        }
+      ]
+    }
+  ]
+}
